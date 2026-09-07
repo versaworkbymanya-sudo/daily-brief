@@ -134,7 +134,7 @@ def slug(text):
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
-def render(grouped, total, dead):
+def render(grouped, total, dead, archived_on=None):
     now = datetime.now(timezone.utc)
     stamp = now.astimezone(IST)
 
@@ -164,6 +164,7 @@ def render(grouped, total, dead):
                    .replace("__DATE__", stamp.strftime("%A, %-d %B")) \
                    .replace("__UPDATED__", stamp.strftime("%-I:%M %p IST")) \
                    .replace("__TOTAL__", str(total)) \
+                   .replace("__ARCHIVE__", archived_on or "") \
                    .replace("__WARN__", html.escape(warn))
 
 
@@ -198,6 +199,32 @@ body{margin:0;background:var(--bg);color:var(--ink);
 h1{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:1.5rem;
    margin:0;letter-spacing:-.02em}
 .when{font-size:.72rem;color:var(--dim);text-align:right;line-height:1.35}
+.dateBtn{border:1px solid var(--rule);background:var(--card);color:var(--ink);
+  font-family:inherit;font-size:.72rem;font-weight:600;padding:5px 11px;
+  border-radius:99px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.dateBtn:hover{border-color:var(--accent);color:var(--accent)}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;
+  display:none;align-items:flex-end;justify-content:center}
+.sheet.on{display:flex}
+.sheetIn{background:var(--card);width:100%;max-width:480px;
+  border-radius:18px 18px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom));
+  max-height:70vh;overflow-y:auto}
+.sheetIn h3{font-family:Newsreader,serif;font-weight:500;font-size:1.15rem;
+  margin:0 0 4px}
+.sheetIn p{color:var(--dim);font-size:.76rem;margin:0 0 14px}
+.dates{display:flex;flex-direction:column;gap:2px}
+.dRow{display:flex;justify-content:space-between;align-items:center;
+  padding:11px 12px;border-radius:10px;text-decoration:none;color:var(--ink);
+  font-size:.87rem;border:1px solid transparent}
+.dRow:hover{background:var(--soft);border-color:var(--rule)}
+.dRow.cur{background:var(--soft);color:var(--accent);font-weight:600}
+.dRow span{font-size:.72rem;color:var(--dim)}
+.closeS{width:100%;margin-top:14px;padding:10px;border-radius:99px;
+  border:1px solid var(--rule);background:transparent;color:var(--dim);
+  font-family:inherit;font-size:.82rem;cursor:pointer}
+.arch{background:var(--soft);color:var(--accent);text-align:center;
+  padding:7px 14px;font-size:.75rem;font-weight:600}
+.arch a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 .bar{height:3px;background:var(--rule);border-radius:99px;margin-top:12px;overflow:hidden}
 .fill{height:100%;width:0;background:var(--accent);border-radius:99px;
       transition:width .25s ease}
@@ -271,11 +298,13 @@ button:focus-visible,a:focus-visible,.tab:focus-visible{
 </head>
 <body>
 
+<div id="archBar"></div>
 <div class="top">
   <div class="brand">
     <h1>Daily Brief</h1>
     <div class="when">__DATE__<br>updated __UPDATED__</div>
   </div>
+  <div style="margin-top:10px"><button class="dateBtn" id="dateBtn">&#128197; Purani news</button></div>
   <div class="bar"><div class="fill" id="fill"></div></div>
   <div class="tabs" id="tabs"></div>
 </div>
@@ -286,6 +315,15 @@ button:focus-visible,a:focus-visible,.tab:focus-visible{
     <h2>Ho gaya</h2>
     <p id="doneMsg"></p>
     <button class="again" id="again">Phir se dekho</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet">
+  <div class="sheetIn">
+    <h3>Purani news</h3>
+    <p>Kisi bhi din pe tap karo</p>
+    <div class="dates" id="dates">Loading...</div>
+    <button class="closeS" id="closeS">Band karo</button>
   </div>
 </div>
 
@@ -434,6 +472,60 @@ addEventListener("keydown", e => {
   if (e.key === "Enter" && idx < deck.length) window.open(deck[idx].u, "_blank");
 });
 
+const ARCHIVED = "__ARCHIVE__";
+const BASE = ARCHIVED ? "./" : "./archive/";
+
+if (ARCHIVED){
+  $("archBar").className = "arch";
+  $("archBar").innerHTML = "Purani news &#183; " + ARCHIVED +
+    ' &nbsp;<a href="../index.html">Aaj ki news dekho</a>';
+}
+
+function fmtDate(s){
+  const d = new Date(s + "T00:00:00");
+  return d.toLocaleDateString("en-IN",
+    {weekday:"long", day:"numeric", month:"long"});
+}
+
+function relDay(s){
+  const t = new Date(); t.setHours(0,0,0,0);
+  const d = new Date(s + "T00:00:00");
+  const n = Math.round((t - d) / 86400000);
+  if (n === 0) return "Aaj";
+  if (n === 1) return "Kal";
+  return n + " din pehle";
+}
+
+let datesLoaded = false;
+async function openSheet(){
+  $("sheet").classList.add("on");
+  if (datesLoaded) return;
+  const box = $("dates");
+  try {
+    const r = await fetch(BASE + "dates.json", {cache:"no-store"});
+    const list = await r.json();
+    if (!list.length){ box.textContent = "Abhi koi purana din nahi hai."; return; }
+    box.innerHTML = "";
+    list.forEach(d => {
+      const a = document.createElement("a");
+      a.className = "dRow" + (d === ARCHIVED ? " cur" : "");
+      a.href = (ARCHIVED ? "./" : "./archive/") + d + ".html";
+      a.innerHTML = fmtDate(d) + "<span>" + relDay(d) + "</span>";
+      box.appendChild(a);
+    });
+    datesLoaded = true;
+  } catch {
+    box.textContent = "Archive abhi nahi bana. Kal se dikhega.";
+  }
+}
+
+$("dateBtn").onclick = openSheet;
+$("closeS").onclick = () => $("sheet").classList.remove("on");
+$("sheet").onclick = e => { if (e.target === $("sheet")) $("sheet").classList.remove("on"); };
+addEventListener("keydown", e => {
+  if (e.key === "Escape") $("sheet").classList.remove("on");
+});
+
 buildTabs();
 load();
 if (WARN) console.warn(WARN);
@@ -448,10 +540,35 @@ def main():
     print("Fetching feeds...")
     items, dead = collect(feeds)
     grouped, total = filter_and_group(items, list(feeds))
-    out = ROOT / "docs" / "index.html"
-    out.parent.mkdir(exist_ok=True)
-    out.write_text(render(grouped, total, dead), encoding="utf-8")
-    print(f"\n{total} stories across {len(grouped)} sections -> {out}")
+
+    docs = ROOT / "docs"
+    arch = docs / "archive"
+    arch.mkdir(parents=True, exist_ok=True)
+    today = datetime.now(IST).strftime("%Y-%m-%d")
+
+    # Live page
+    (docs / "index.html").write_text(
+        render(grouped, total, dead), encoding="utf-8")
+
+    # Dated snapshot (overwritten by the later run on the same day)
+    (arch / f"{today}.html").write_text(
+        render(grouped, total, dead, archived_on=today), encoding="utf-8")
+
+    # Index of available dates, newest first
+    dates = sorted(
+        (p.stem for p in arch.glob("*.html")
+         if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem)),
+        reverse=True)[:120]
+    (arch / "dates.json").write_text(json.dumps(dates), encoding="utf-8")
+
+    # Prune snapshots older than the 120 we keep
+    keep = set(dates)
+    for p in arch.glob("*.html"):
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem) and p.stem not in keep:
+            p.unlink()
+
+    print(f"\n{total} stories, {len(grouped)} sections")
+    print(f"archive: {len(dates)} day(s) available")
     if dead:
         print(f"{len(dead)} feed(s) failed: {', '.join(sorted(set(dead)))}")
 
