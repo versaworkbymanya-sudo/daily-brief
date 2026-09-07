@@ -138,157 +138,306 @@ def render(grouped, total, dead):
     now = datetime.now(timezone.utc)
     stamp = now.astimezone(IST)
 
-    nav = "".join(
-        f'<a class="chip" href="#{slug(s)}">{html.escape(s)}'
-        f'<span class="chip-n">{len(v)}</span></a>'
-        for s, v in grouped.items()
-    )
-
-    blocks = []
+    cards = []
     for section, items in grouped.items():
-        rows = []
         for it in items:
-            also = ""
-            if it["also"]:
-                n = len(set(it["also"]))
-                also = f'<span class="also">+{n} more</span>'
-            summary = (
-                f'<p class="sum">{html.escape(it["summary"])}</p>'
-                if it["summary"] else ""
-            )
-            rows.append(
-                f'<li class="item">'
-                f'<a class="hl" href="{html.escape(it["link"])}" target="_blank" '
-                f'rel="noopener">{html.escape(it["title"])}</a>'
-                f'{summary}'
-                f'<div class="meta"><span class="src">{html.escape(it["source"])}</span>'
-                f'<span class="time">{ago(it["ts"], now)}</span>{also}</div>'
-                f'</li>'
-            )
-        blocks.append(
-            f'<section id="{slug(section)}" class="sec">'
-            f'<h2 class="sec-h">{html.escape(section)}'
-            f'<span class="sec-n">{len(items)}</span></h2>'
-            f'<ul class="list">{"".join(rows)}</ul></section>'
-        )
+            cards.append({
+                "t": it["title"],
+                "s": it["summary"],
+                "u": it["link"],
+                "src": it["source"],
+                "sec": section,
+                "ago": ago(it["ts"], now),
+                "also": len(set(it["also"])),
+            })
+
+    sections = list(grouped.keys())
+    payload = json.dumps({"cards": cards, "sections": sections},
+                         ensure_ascii=False, separators=(",", ":"))
 
     warn = ""
     if dead:
-        warn = (
-            f'<p class="warn">{len(dead)} feed(s) did not respond: '
-            f'{html.escape(", ".join(sorted(set(dead))[:6]))}</p>'
-        )
+        warn = (f"{len(dead)} feeds did not respond: "
+                f"{', '.join(sorted(set(dead))[:5])}")
 
-    return TEMPLATE.format(
-        date=stamp.strftime("%A, %-d %B %Y"),
-        updated=stamp.strftime("%-I:%M %p IST"),
-        total=total,
-        nav=nav,
-        blocks="".join(blocks),
-        warn=warn,
-        year=stamp.year,
-    )
+    return TEMPLATE.replace("__DATA__", payload) \
+                   .replace("__DATE__", stamp.strftime("%A, %-d %B")) \
+                   .replace("__UPDATED__", stamp.strftime("%-I:%M %p IST")) \
+                   .replace("__TOTAL__", str(total)) \
+                   .replace("__WARN__", html.escape(warn))
 
 
-TEMPLATE = """<!DOCTYPE html>
+TEMPLATE = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#101215">
 <title>Daily Brief</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {{
-    --bg:#FAFBFC; --panel:#FFFFFF; --ink:#14161A; --dim:#5A6270;
-    --rule:#E3E6EA; --accent:#0F5C57; --accent-soft:#E8F1F0;
-  }}
-  @media (prefers-color-scheme: dark) {{
-    :root {{
-      --bg:#101215; --panel:#171A1F; --ink:#E8EAED; --dim:#949BA6;
-      --rule:#262A31; --accent:#6FD3C7; --accent-soft:#16302E;
-    }}
-  }}
-  * {{ box-sizing:border-box; }}
-  body {{
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family:'IBM Plex Sans',system-ui,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }}
-  .wrap {{ max-width:760px; margin:0 auto; padding:0 20px 80px; }}
-  header {{ padding:44px 0 20px; }}
-  h1 {{
-    font-family:Newsreader,Georgia,serif; font-weight:500;
-    font-size:clamp(2.1rem,7vw,3rem); letter-spacing:-.02em;
-    margin:0 0 6px; line-height:1.05;
-  }}
-  .sub {{ color:var(--dim); font-size:.86rem; margin:0; }}
-  .sub b {{ color:var(--ink); font-weight:600; }}
-  nav {{
-    position:sticky; top:0; z-index:5; background:var(--bg);
-    padding:12px 0; margin-bottom:8px;
-    border-bottom:1px solid var(--rule);
-    display:flex; gap:7px; overflow-x:auto; scrollbar-width:none;
-  }}
-  nav::-webkit-scrollbar {{ display:none; }}
-  .chip {{
-    flex:0 0 auto; display:flex; align-items:center; gap:6px;
-    padding:6px 12px; border:1px solid var(--rule); border-radius:999px;
-    color:var(--ink); text-decoration:none; font-size:.8rem; font-weight:500;
-    background:var(--panel); white-space:nowrap;
-  }}
-  .chip:hover {{ border-color:var(--accent); color:var(--accent); }}
-  .chip-n {{ color:var(--dim); font-size:.72rem; }}
-  .sec {{ padding-top:34px; }}
-  .sec-h {{
-    font-family:Newsreader,Georgia,serif; font-weight:600; font-size:1.32rem;
-    margin:0 0 2px; display:flex; align-items:baseline; gap:9px;
-    letter-spacing:-.01em;
-  }}
-  .sec-n {{ font-family:'IBM Plex Sans',sans-serif; font-size:.72rem;
-            font-weight:500; color:var(--dim); }}
-  .list {{ list-style:none; margin:0; padding:0;
-           border-top:2px solid var(--ink); }}
-  .item {{ padding:15px 0 14px; border-bottom:1px solid var(--rule); }}
-  .hl {{
-    color:var(--ink); text-decoration:none; font-size:1.03rem;
-    font-weight:500; line-height:1.38; display:block;
-  }}
-  .hl:hover {{ color:var(--accent); text-decoration:underline;
-               text-underline-offset:3px; }}
-  .sum {{ color:var(--dim); font-size:.85rem; line-height:1.5;
-          margin:5px 0 0; }}
-  .meta {{ display:flex; align-items:center; gap:9px; margin-top:7px;
-           font-size:.75rem; color:var(--dim); }}
-  .src {{ font-weight:500; color:var(--ink); opacity:.75; }}
-  .time {{ font-variant-numeric:tabular-nums; }}
-  .also {{ background:var(--accent-soft); color:var(--accent);
-           padding:1px 7px; border-radius:999px; font-size:.7rem;
-           font-weight:500; }}
-  .warn {{ margin-top:40px; padding:11px 14px; background:var(--panel);
-           border:1px solid var(--rule); border-radius:8px;
-           color:var(--dim); font-size:.78rem; }}
-  footer {{ margin-top:46px; padding-top:18px;
-            border-top:1px solid var(--rule);
-            color:var(--dim); font-size:.76rem; }}
-  a:focus-visible, .chip:focus-visible {{
-    outline:2px solid var(--accent); outline-offset:3px; border-radius:3px;
-  }}
+:root{
+  --bg:#FAFBFC;--card:#FFFFFF;--ink:#14161A;--dim:#5A6270;
+  --rule:#E3E6EA;--accent:#0F5C57;--soft:#E8F1F0;--shadow:rgba(20,22,26,.10);
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#0E1013;--card:#191D23;--ink:#E8EAED;--dim:#98A0AB;
+        --rule:#272C34;--accent:#6FD3C7;--soft:#16302E;--shadow:rgba(0,0,0,.5);}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:'IBM Plex Sans',system-ui,sans-serif;overflow:hidden;
+  display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+
+.top{padding:14px 18px 10px;flex:0 0 auto;max-width:680px;width:100%;margin:0 auto}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+h1{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:1.5rem;
+   margin:0;letter-spacing:-.02em}
+.when{font-size:.72rem;color:var(--dim);text-align:right;line-height:1.35}
+.bar{height:3px;background:var(--rule);border-radius:99px;margin-top:12px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--accent);border-radius:99px;
+      transition:width .25s ease}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
+      margin-top:11px;padding-bottom:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:5px 11px;border:1px solid var(--rule);
+     border-radius:99px;background:var(--card);color:var(--dim);
+     font-size:.74rem;font-weight:500;cursor:pointer;white-space:nowrap;
+     font-family:inherit}
+.tab[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);
+     color:var(--bg)}
+
+.stage{flex:1 1 auto;position:relative;display:flex;align-items:center;
+       justify-content:center;padding:6px 18px 0;min-height:0}
+.deck{position:relative;width:100%;max-width:620px;height:100%;max-height:560px}
+.c{position:absolute;inset:0;background:var(--card);border:1px solid var(--rule);
+   border-radius:20px;padding:26px 24px;display:flex;flex-direction:column;
+   box-shadow:0 8px 28px var(--shadow);will-change:transform,opacity;
+   overflow:hidden}
+.c.behind{transform:scale(.955) translateY(14px);opacity:.55;
+          box-shadow:0 4px 14px var(--shadow)}
+.c.behind2{transform:scale(.915) translateY(27px);opacity:.28;box-shadow:none}
+.c.gone{transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s}
+.badge{display:inline-flex;align-self:flex-start;gap:7px;align-items:center;
+  background:var(--soft);color:var(--accent);padding:3px 10px;border-radius:99px;
+  font-size:.68rem;font-weight:600;margin-bottom:14px}
+.hl{font-family:Newsreader,Georgia,serif;font-weight:500;
+    font-size:clamp(1.25rem,4.4vw,1.7rem);line-height:1.24;letter-spacing:-.015em;
+    margin:0;color:var(--ink);text-decoration:none;display:block}
+.hl:hover{color:var(--accent)}
+.sum{color:var(--dim);font-size:.9rem;line-height:1.55;margin:13px 0 0;
+     overflow-y:auto;flex:1 1 auto;min-height:0}
+.foot{display:flex;align-items:center;gap:10px;margin-top:16px;
+      padding-top:13px;border-top:1px solid var(--rule);flex:0 0 auto}
+.src{font-size:.76rem;font-weight:600}
+.time{font-size:.74rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.also{font-size:.68rem;color:var(--accent);background:var(--soft);
+      padding:2px 8px;border-radius:99px;font-weight:600}
+.open{margin-left:auto;font-size:.75rem;font-weight:600;color:var(--accent);
+      text-decoration:none;border:1px solid var(--accent);padding:5px 13px;
+      border-radius:99px}
+
+.bottom{flex:0 0 auto;padding:14px 18px calc(16px + env(safe-area-inset-bottom));
+        max-width:620px;width:100%;margin:0 auto}
+.ctrls{display:flex;align-items:center;gap:12px}
+.nav{flex:0 0 auto;width:46px;height:46px;border-radius:50%;
+     border:1px solid var(--rule);background:var(--card);color:var(--ink);
+     font-size:1.15rem;cursor:pointer;display:grid;place-items:center;
+     font-family:inherit}
+.nav:disabled{opacity:.3;cursor:default}
+.nav:active:not(:disabled){transform:scale(.93)}
+.count{flex:1 1 auto;text-align:center;font-size:.78rem;color:var(--dim);
+       font-variant-numeric:tabular-nums}
+.count b{color:var(--ink);font-weight:600}
+.hint{text-align:center;font-size:.68rem;color:var(--dim);margin-top:9px;
+      opacity:.65}
+.done{position:absolute;inset:0;display:none;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;gap:14px;
+      padding:30px}
+.done.on{display:flex}
+.done h2{font-family:Newsreader,serif;font-weight:500;font-size:1.6rem;margin:0}
+.done p{color:var(--dim);font-size:.87rem;margin:0;max-width:34ch;line-height:1.5}
+.again{padding:9px 20px;border-radius:99px;border:1px solid var(--accent);
+       background:transparent;color:var(--accent);font-weight:600;
+       font-size:.82rem;cursor:pointer;font-family:inherit}
+button:focus-visible,a:focus-visible,.tab:focus-visible{
+  outline:2px solid var(--accent);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
+
+<div class="top">
+  <div class="brand">
     <h1>Daily Brief</h1>
-    <p class="sub">{date} &nbsp;·&nbsp; <b>{total}</b> stories &nbsp;·&nbsp; updated {updated}</p>
-  </header>
-  <nav>{nav}</nav>
-  {blocks}
-  {warn}
-  <footer>Rebuilt automatically every morning. Headlines link to the original publisher.</footer>
+    <div class="when">__DATE__<br>updated __UPDATED__</div>
+  </div>
+  <div class="bar"><div class="fill" id="fill"></div></div>
+  <div class="tabs" id="tabs"></div>
 </div>
+
+<div class="stage">
+  <div class="deck" id="deck"></div>
+  <div class="done" id="done">
+    <h2>Ho gaya</h2>
+    <p id="doneMsg"></p>
+    <button class="again" id="again">Phir se dekho</button>
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="ctrls">
+    <button class="nav" id="prev" aria-label="Previous">&#8592;</button>
+    <div class="count"><b id="pos">0</b> / <span id="tot">0</span></div>
+    <button class="nav" id="next" aria-label="Next">&#8594;</button>
+  </div>
+  <div class="hint">Swipe karo ya arrow keys dabao &nbsp;·&nbsp; card pe tap = article khulega</div>
+</div>
+
+<script>
+const DATA = __DATA__;
+const WARN = "__WARN__";
+
+let filter = "all", idx = 0, deck = [];
+const $ = id => document.getElementById(id);
+
+const seen = (() => {
+  try { return new Set(JSON.parse(localStorage.getItem("db_seen") || "[]")); }
+  catch { return new Set(); }
+})();
+const saveSeen = () => {
+  try { localStorage.setItem("db_seen", JSON.stringify([...seen].slice(-1200))); }
+  catch {}
+};
+
+function esc(s){ const d=document.createElement("div"); d.textContent=s||""; return d.innerHTML; }
+
+function buildTabs(){
+  const t = $("tabs");
+  const mk = (label, val, n) => {
+    const b = document.createElement("button");
+    b.className = "tab"; b.textContent = label + " " + n;
+    b.setAttribute("aria-pressed", String(filter === val));
+    b.onclick = () => { filter = val; idx = 0; buildTabs(); load(); };
+    return b;
+  };
+  t.innerHTML = "";
+  t.appendChild(mk("All", "all", DATA.cards.length));
+  DATA.sections.forEach(s => {
+    const n = DATA.cards.filter(c => c.sec === s).length;
+    if (n) t.appendChild(mk(s, s, n));
+  });
+}
+
+function load(){
+  deck = filter === "all" ? DATA.cards.slice()
+                          : DATA.cards.filter(c => c.sec === filter);
+  const fresh = deck.filter(c => !seen.has(c.u));
+  if (fresh.length) deck = fresh.concat(deck.filter(c => seen.has(c.u)));
+  $("tot").textContent = deck.length;
+  render();
+}
+
+function card(c, cls){
+  const el = document.createElement("article");
+  el.className = "c " + cls;
+  el.innerHTML =
+    '<span class="badge">' + esc(c.sec) + '</span>' +
+    '<a class="hl" href="' + esc(c.u) + '" target="_blank" rel="noopener">' + esc(c.t) + '</a>' +
+    (c.s ? '<p class="sum">' + esc(c.s) + '</p>' : '<div class="sum"></div>') +
+    '<div class="foot"><span class="src">' + esc(c.src) + '</span>' +
+    '<span class="time">' + esc(c.ago) + '</span>' +
+    (c.also ? '<span class="also">+' + c.also + ' more</span>' : '') +
+    '<a class="open" href="' + esc(c.u) + '" target="_blank" rel="noopener">Read</a></div>';
+  return el;
+}
+
+function render(){
+  const d = $("deck");
+  d.innerHTML = "";
+  $("done").classList.toggle("on", idx >= deck.length);
+  if (idx >= deck.length){
+    $("doneMsg").textContent = deck.length
+      ? deck.length + " stories padh li. Agla update aane pe nayi aayengi."
+      : "Is section mein abhi kuch nahi hai.";
+    $("pos").textContent = deck.length;
+    $("fill").style.width = "100%";
+    $("prev").disabled = idx === 0; $("next").disabled = true;
+    return;
+  }
+  for (let i = Math.min(idx + 2, deck.length - 1); i >= idx; i--){
+    const cls = i === idx ? "" : (i === idx + 1 ? "behind" : "behind2");
+    d.appendChild(card(deck[i], cls));
+  }
+  $("pos").textContent = idx + 1;
+  $("fill").style.width = ((idx) / deck.length * 100) + "%";
+  $("prev").disabled = idx === 0;
+  $("next").disabled = false;
+  swipe(d.lastElementChild);
+}
+
+function go(step){
+  if (step > 0 && idx < deck.length){
+    seen.add(deck[idx].u); saveSeen();
+  }
+  idx = Math.max(0, Math.min(deck.length, idx + step));
+  render();
+}
+
+function fly(el, dir, after){
+  el.classList.add("gone");
+  el.style.transform = "translateX(" + (dir * 130) + "%) rotate(" + (dir * 9) + "deg)";
+  el.style.opacity = "0";
+  setTimeout(after, 220);
+}
+
+function swipe(el){
+  if (!el) return;
+  let x0 = null, y0 = null, dx = 0, moved = false;
+  el.addEventListener("touchstart", e => {
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; moved = false;
+  }, {passive:true});
+  el.addEventListener("touchmove", e => {
+    if (x0 === null) return;
+    dx = e.touches[0].clientX - x0;
+    const dy = e.touches[0].clientY - y0;
+    if (Math.abs(dx) < Math.abs(dy)) return;
+    moved = true;
+    el.style.transform = "translateX(" + dx + "px) rotate(" + (dx/26) + "deg)";
+    el.style.opacity = String(1 - Math.abs(dx)/460);
+  }, {passive:true});
+  el.addEventListener("touchend", () => {
+    if (x0 === null) return;
+    if (moved && Math.abs(dx) > 72){
+      fly(el, dx > 0 ? 1 : -1, () => go(dx > 0 ? -1 : 1));
+    } else {
+      el.style.transition = "transform .2s, opacity .2s";
+      el.style.transform = ""; el.style.opacity = "";
+      setTimeout(() => el.style.transition = "", 200);
+    }
+    x0 = null; dx = 0;
+  });
+}
+
+$("next").onclick = () => { const t = $("deck").lastElementChild;
+  t ? fly(t, -1, () => go(1)) : go(1); };
+$("prev").onclick = () => go(-1);
+$("again").onclick = () => { idx = 0; render(); };
+
+addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); $("next").click(); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+  if (e.key === "Enter" && idx < deck.length) window.open(deck[idx].u, "_blank");
+});
+
+buildTabs();
+load();
+if (WARN) console.warn(WARN);
+</script>
 </body>
 </html>
 """
