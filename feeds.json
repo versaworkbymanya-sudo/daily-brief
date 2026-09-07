@@ -1,40 +1,118 @@
 {
-  "Markets & Economy": [
-    ["Reuters Business", "https://feeds.reuters.com/reuters/businessNews"],
-    ["Mint Markets", "https://www.livemint.com/rss/markets"],
-    ["Economic Times Markets", "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms"],
-    ["Business Standard Markets", "https://www.business-standard.com/rss/markets-106.rss"],
-    ["CNBC Finance", "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664"]
+  "Markets": [
+    [
+      "Reuters Business",
+      "https://feeds.reuters.com/reuters/businessNews"
+    ],
+    [
+      "Mint Markets",
+      "https://www.livemint.com/rss/markets"
+    ],
+    [
+      "Economic Times Markets",
+      "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms"
+    ],
+    [
+      "Business Standard Markets",
+      "https://www.business-standard.com/rss/markets-106.rss"
+    ],
+    [
+      "CNBC Finance",
+      "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664"
+    ]
   ],
-  "India Business": [
-    ["Mint Companies", "https://www.livemint.com/rss/companies"],
-    ["Economic Times Industry", "https://economictimes.indiatimes.com/industry/rssfeeds/13352306.cms"],
-    ["Business Standard Companies", "https://www.business-standard.com/rss/companies-101.rss"],
-    ["The Hindu BusinessLine", "https://www.thehindubusinessline.com/feeder/default.rss"]
+  "India business": [
+    [
+      "Mint Companies",
+      "https://www.livemint.com/rss/companies"
+    ],
+    [
+      "Economic Times Industry",
+      "https://economictimes.indiatimes.com/industry/rssfeeds/13352306.cms"
+    ],
+    [
+      "Business Standard Companies",
+      "https://www.business-standard.com/rss/companies-101.rss"
+    ],
+    [
+      "The Hindu BusinessLine",
+      "https://www.thehindubusinessline.com/feeder/default.rss"
+    ]
   ],
-  "Policy & Economy": [
-    ["Mint Economy", "https://www.livemint.com/rss/economy"],
-    ["Economic Times Economy", "https://economictimes.indiatimes.com/news/economy/rssfeeds/1373380680.cms"],
-    ["Business Standard Economy", "https://www.business-standard.com/rss/economy-102.rss"],
-    ["PIB Releases", "https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=3"]
+  "Policy": [
+    [
+      "Mint Economy",
+      "https://www.livemint.com/rss/economy"
+    ],
+    [
+      "Economic Times Economy",
+      "https://economictimes.indiatimes.com/news/economy/rssfeeds/1373380680.cms"
+    ],
+    [
+      "Business Standard Economy",
+      "https://www.business-standard.com/rss/economy-102.rss"
+    ],
+    [
+      "PIB Releases",
+      "https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=3"
+    ]
   ],
-  "AI & Tech": [
-    ["TechCrunch AI", "https://techcrunch.com/category/artificial-intelligence/feed/"],
-    ["Ars Technica", "https://feeds.arstechnica.com/arstechnica/index"],
-    ["The Verge", "https://www.theverge.com/rss/index.xml"],
-    ["MIT Tech Review", "https://www.technologyreview.com/feed/"],
-    ["Hacker News Front Page", "https://hnrss.org/frontpage?points=150"]
+  "AI and tech": [
+    [
+      "TechCrunch AI",
+      "https://techcrunch.com/category/artificial-intelligence/feed/"
+    ],
+    [
+      "Ars Technica",
+      "https://feeds.arstechnica.com/arstechnica/index"
+    ],
+    [
+      "The Verge",
+      "https://www.theverge.com/rss/index.xml"
+    ],
+    [
+      "MIT Tech Review",
+      "https://www.technologyreview.com/feed/"
+    ],
+    [
+      "Hacker News Front Page",
+      "https://hnrss.org/frontpage?points=150"
+    ]
   ],
-  "Startups & Funding": [
-    ["TechCrunch Startups", "https://techcrunch.com/category/startups/feed/"],
-    ["Entrackr", "https://entrackr.com/feed/"],
-    ["Inc42", "https://inc42.com/feed/"],
-    ["YourStory", "https://yourstory.com/feed"]
+  "Startups": [
+    [
+      "TechCrunch Startups",
+      "https://techcrunch.com/category/startups/feed/"
+    ],
+    [
+      "Entrackr",
+      "https://entrackr.com/feed/"
+    ],
+    [
+      "Inc42",
+      "https://inc42.com/feed/"
+    ],
+    [
+      "YourStory",
+      "https://yourstory.com/feed"
+    ]
   ],
   "World": [
-    ["BBC World", "https://feeds.bbci.co.uk/news/world/rss.xml"],
-    ["Reuters World", "https://feeds.reuters.com/Reuters/worldNews"],
-    ["Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml"],
-    ["The Hindu National", "https://www.thehindu.com/news/national/feeder/default.rss"]
+    [
+      "BBC World",
+      "https://feeds.bbci.co.uk/news/world/rss.xml"
+    ],
+    [
+      "Reuters World",
+      "https://feeds.reuters.com/Reuters/worldNews"
+    ],
+    [
+      "Al Jazeera",
+      "https://www.aljazeera.com/xml/rss/all.xml"
+    ],
+    [
+      "The Hindu National",
+      "https://www.thehindu.com/news/national/feeder/default.rss"
+    ]
   ]
 }
