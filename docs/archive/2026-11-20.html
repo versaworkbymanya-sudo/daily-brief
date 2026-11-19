@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0F1729">
+<title>Daily Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.7.0/dist/tabler-icons.min.css" rel="stylesheet">
+<style>
+:root{--bg:#0F1729;--pan:#182236;--pan2:#22304C;--line:#2E3D5C;
+      --ink:#F2F5FA;--dim:#A8B4CA;--dim2:#7C8BA8;--warm:#FAC775;--warmbg:#2A2010}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;
+     -webkit-font-smoothing:antialiased}
+h1,h2,h3,.dis{font-family:'Baloo 2',Nunito,sans-serif;font-weight:600}
+.app{display:flex;min-height:100vh;max-width:1240px;margin:0 auto}
+
+.side{flex:0 0 196px;padding:20px 14px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.logo{font-family:'Baloo 2';font-size:22px;line-height:1.1}
+.tag{color:var(--dim2);font-size:11px;margin:2px 0 18px}
+.nv{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:11px;
+    color:var(--dim);text-decoration:none;font-size:14px;font-weight:600;margin-bottom:3px;
+    border:2px solid transparent;cursor:pointer;background:none;width:100%;
+    font-family:inherit;text-align:left}
+.nv i{font-size:18px}
+.nv:hover{background:var(--pan)}
+.nv.on{background:var(--nvbg,#5DCAA5);color:var(--nvfg,#04342C);border-color:var(--nvbd,#1D9E75)}
+.nvn{margin-left:auto;font-size:11px;opacity:.75}
+.hr{height:2px;background:var(--line);margin:12px 0;border-radius:2px}
+
+.main{flex:1;min-width:0;padding:20px 18px 60px}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+     flex-wrap:wrap;margin-bottom:18px}
+.hey{font-size:26px;line-height:1.15}
+.sub{color:var(--dim2);font-size:13px;margin-top:2px}
+.meta{text-align:right;font-size:12px;color:var(--dim)}
+.meta b{display:block;font-weight:600}
+.pills{display:flex;gap:7px;margin-top:7px;justify-content:flex-end;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:99px;
+      font-size:11px;font-weight:700;border:2px solid var(--line);background:var(--pan);color:var(--dim)}
+.pill.fire{background:var(--warmbg);border-color:#EF9F27;color:var(--warm)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.tile{border-radius:18px;padding:15px 16px 14px;text-decoration:none;display:block;
+      border:4px solid transparent;cursor:pointer;font-family:inherit;text-align:left;width:100%}
+.tile i.hd{font-size:28px}
+.tile .nm{font-family:'Baloo 2';font-size:17px;margin-top:7px}
+.tile .bl{font-size:12px;margin-top:1px;font-weight:600}
+.tile .rw{display:flex;align-items:center;justify-content:space-between;margin-top:12px;
+          font-size:12px;font-weight:700}
+
+.panel{background:var(--pan);border:3px solid var(--line);border-radius:18px;
+       padding:14px 16px;margin-top:14px}
+.ph{display:flex;align-items:center;gap:7px;font-family:'Baloo 2';font-size:16px;margin-bottom:11px}
+.trow{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px 18px}
+.tr{display:flex;gap:9px;align-items:baseline;text-decoration:none}
+.trn{flex:0 0 20px;height:20px;border-radius:50%;background:var(--pan2);color:var(--warm);
+     font-size:11px;font-weight:700;display:grid;place-items:center}
+.trt{font-size:13px;color:var(--ink);line-height:1.4;font-weight:600}
+.trs{color:var(--dim2);font-weight:400;font-size:12px}
+
+.deck{position:relative;height:min(70vh,470px);margin-top:6px}
+.bk{position:absolute;border-radius:20px;background:var(--pan);border:3px solid var(--line)}
+.bk.b1{left:2.5%;right:2.5%;top:9px;bottom:-6px}
+.bk.b2{left:5%;right:5%;top:18px;bottom:-12px}
+.card{position:absolute;inset:0;border-radius:20px;overflow:hidden;display:flex;
+      cursor:grab;user-select:none;border-width:4px;border-style:solid}
+.card.go{transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .28s}
+.cmain{flex:1;min-width:0;padding:17px 18px;display:flex;flex-direction:column;position:relative}
+.crow{display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap}
+.bdg{font-size:12px;font-weight:700;padding:4px 13px;border-radius:99px;border:2px solid}
+.tmm{font-size:12px;font-weight:600}
+.statb{display:inline-flex;align-items:baseline;gap:9px;align-self:flex-start;
+       padding:7px 14px;border-radius:14px;border:3px solid;margin-bottom:10px}
+.statv{font-family:'Baloo 2';font-size:clamp(22px,5vw,30px);line-height:1}
+.statl{font-size:12px;font-weight:600}
+.ttl{font-family:'Baloo 2';font-size:clamp(17px,3.4vw,23px);line-height:1.25;margin-bottom:8px}
+.sm{font-size:14px;line-height:1.6;margin:0;flex:1;overflow-y:auto;font-weight:400}
+.cfoot{display:flex;align-items:center;gap:9px;padding-top:12px;margin-top:9px;
+       border-top:3px solid;flex-wrap:wrap}
+.srcn{font-size:13px;font-weight:700}
+.btn{font-family:inherit;font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px;
+     border:3px solid;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+     text-decoration:none;background:none}
+.cside{flex:0 0 168px;padding:17px 14px;display:flex;flex-direction:column;border-left:4px solid}
+.sideh{font-size:11px;font-weight:700;margin-bottom:9px}
+.och{font-size:12px;font-weight:600;line-height:1.3;padding:5px 10px;border-radius:9px;
+     border:2px solid;margin-bottom:6px}
+.thr{margin-top:auto;font-size:11px;font-weight:700;line-height:1.35;padding:7px 11px;
+     border-radius:11px;border:3px solid}
+.ov{position:absolute;top:16px;opacity:0;font-size:13px;font-weight:700;padding:6px 16px;
+    border-radius:99px;border:3px solid;pointer-events:none}
+.ov.s{right:16px}
+.ov.k{left:16px;background:var(--bg);color:var(--dim);border-color:#3A4763}
+
+.ctrl{display:flex;align-items:center;gap:12px;margin-top:22px}
+.rnd{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+     border:3px solid var(--line);background:var(--pan);color:var(--dim);font-size:19px}
+.rnd:hover{border-color:var(--dim2)}
+.rnd:disabled{opacity:.35;cursor:default}
+.bar{height:7px;border-radius:99px;background:var(--pan2);border:2px solid var(--line);overflow:hidden}
+.fil{height:100%;transition:width .25s}
+.hint{text-align:center;color:var(--dim2);font-size:11px;margin-top:7px;font-weight:600}
+
+.lst{display:flex;flex-direction:column;gap:9px}
+.li{display:flex;gap:12px;align-items:flex-start;background:var(--pan);border:3px solid var(--line);
+    border-radius:15px;padding:12px 14px;text-decoration:none}
+.li:hover{border-color:var(--dim2)}
+.lidot{flex:0 0 12px;height:12px;border-radius:50%;margin-top:4px}
+.lit{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35}
+.lis{font-size:12px;color:var(--dim2);margin-top:3px}
+.rm{margin-left:auto;flex:0 0 auto;background:none;border:none;color:var(--dim2);
+    cursor:pointer;font-size:17px;padding:2px}
+
+.qw{max-width:520px}
+.qcard{background:var(--pan);border:3px solid var(--line);border-radius:18px;padding:18px}
+.qq{font-family:'Baloo 2';font-size:19px;line-height:1.35;margin:8px 0 15px}
+.op{display:block;width:100%;text-align:left;font-family:inherit;font-size:14px;font-weight:600;
+    padding:13px 15px;border-radius:13px;border:3px solid var(--line);background:var(--pan2);
+    color:var(--ink);cursor:pointer;margin-bottom:8px}
+.op:hover:not(:disabled){border-color:var(--dim2)}
+.op.ok{background:#0F3D2E;border-color:#1D9E75;color:#9FE1CB}
+.op.no{background:#3D1616;border-color:#E24B4A;color:#F7C1C1}
+.qfb{font-size:13px;line-height:1.5;margin-top:12px;padding:11px 13px;border-radius:12px;
+     border:3px solid var(--line);background:var(--pan2);color:var(--dim)}
+.big{text-align:center;padding:36px 20px}
+.big i{font-size:52px}
+.big h2{font-size:24px;margin:10px 0 5px}
+.big p{color:var(--dim2);font-size:14px;margin:0 auto;max-width:36ch;line-height:1.55}
+
+.arch{background:var(--warmbg);border:3px solid #EF9F27;color:var(--warm);border-radius:14px;
+      padding:9px 14px;font-size:13px;font-weight:700;margin-bottom:14px;
+      display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.arch a{color:var(--warm);margin-left:auto}
+.hide{display:none!important}
+a{color:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid var(--warm);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+@media(max-width:860px){
+  .app{flex-direction:column}
+  .side{position:static;height:auto;flex:none;padding:14px 12px 0;
+        display:flex;gap:6px;overflow-x:auto}
+  .logo,.tag,.hr{display:none}
+  .nv{width:auto;flex:0 0 auto;padding:8px 13px;margin:0;font-size:13px}
+  .nvn{display:none}
+  .main{padding:16px 14px 46px}
+  .cside{display:none}
+  .meta{text-align:left}
+  .pills{justify-content:flex-start}
+  .deck{height:min(74vh,520px)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="side" id="nav"></nav>
+  <main class="main">
+    <div id="archbar"></div>
+    <div id="view"></div>
+  </main>
+</div>
+
+<script>
+const D = {"cards":[{"sec":"Markets","t":"Retail Investors Dive Into Both Sides of the Anthropic Trade","p":"Retail traders rushed to buy — and sell — Anthropic PBC shares in one of the busiest market debuts on record Thursday.","u":"https://www.livemint.com/market/retail-investors-dive-into-both-sides-of-the-anthropic-trade-11795123326586.html","s":"Mint Markets","m":"19m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"US Sour Crude’s War Premium Vanishes as Supply Surges","p":"The price of US sour oil has plunged, as a surge of oil from Venezuela, Canada and the Middle East gives refiners ample barrels to choose from.","u":"https://www.livemint.com/market/us-sour-crude-s-war-premium-vanishes-as-supply-surges-11795121544365.html","s":"Mint Markets","m":"49m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Latin America Currencies Sink on Rate Worries; Brazil Intervenes","p":"A sell-off in Latin American currencies deepened Thursday, sending the Mexican peso to its lowest since June 2025 and forcing Brazil’s central bank to step in to prop up the real, amid the mounting prospect of more rate hikes in the US.","u":"https://www.livemint.com/market/latin-america-currencies-sink-on-rate-worries-brazil-intervenes-11795119814041.html","s":"Mint Markets","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Japanese investors sought $9.4 billion of shares in Anthropic IPO, sources say","p":"ANTHROPIC-IPO/JAPAN:Japanese investors sought $9.4 billion of shares in Anthropic IPO, sources say","u":"https://www.livemint.com/market/japanese-investors-sought-9-4-billion-of-shares-in-anthropic-ipo-sources-say-11795118526140.html","s":"Mint Markets","m":"1h","o":[],"big":0,"th":"","n":"$9.4 bn","nl":"of shares in"},{"sec":"Markets","t":"Canadian dollar steadies near 19-month low as stocks slide","p":"CANADA-FOREX/:CANADA FX DEBT-Canadian dollar steadies near 19-month low as stocks slide","u":"https://www.livemint.com/market/canadian-dollar-steadies-near-19-month-low-as-stocks-slide-11795117459008.html","s":"Mint Markets","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Offshore Chinese Yuan Drops to Weakest Level in Over a Month","p":"The offshore Chinese yuan declined to the weakest level in more than a month while the dollar rallied as risk appetite shrank.","u":"https://www.livemint.com/market/offshore-chinese-yuan-drops-to-weakest-level-in-over-a-month-11795114293193.html","s":"Mint Markets","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Oil prices inch up as tanker disruptions offset surplus supply outlook","p":"GLOBAL-OIL:Oil prices inch up as tanker disruptions offset surplus supply outlook","u":"https://www.livemint.com/market/oil-prices-inch-up-as-tanker-disruptions-offset-surplus-supply-outlook-11795113669203.html","s":"Mint Markets","m":"3h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"AMD shares slide 8% as report says China links could invite US scrutiny","p":"Shares of AMD plunged by 8% after a report surfaced linking the company to certain Chinese firms, including those on the US government's blacklist. The report indicates that AMD's firmware is being used by a Chinese server manufacturer, which poses potential r","u":"https://economictimes.indiatimes.com/markets/us-stocks/news/amd-shares-slide-8-as-report-says-china-links-could-invite-us-scrutiny/articleshow/136002141.cms","s":"Economic Times Markets","m":"3h","o":[],"big":0,"th":"","n":"8%","nl":"as report says"},{"sec":"Markets","t":"Sagar Defence Engineering files updated DRHP for ₹3,412 crore IPO","p":"Sagar Defence Engineering files updated IPO papers for ₹3,412 crore issue; Mahanadi Coalfields IPO gets 38% subscription on Day One","u":"https://www.business-standard.com/markets/news/sagar-defence-engineering-files-updated-drhp-for-3-412-crore-ipo-126111901460_1.html","s":"Business Standard Markets","m":"4h","o":[],"big":0,"th":"","n":"₹3,412 cr","nl":"IPO"},{"sec":"Markets","t":"Nifty tops 25,500 for first time since February; Sensex reclaims 83K","p":"Auto, banking and consumer durable stocks lead market gains as easing crude prices, FII buying and rupee appreciation lift investor sentiment","u":"https://www.business-standard.com/markets/news/nifty-tops-25-500-for-first-time-since-february-sensex-reclaims-83k-126111901140_1.html","s":"Business Standard Markets","m":"4h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"How India taxes foreign investors' share gains and how peers compare","p":"India charges foreign portfolio investors the same capital gains tax as residents, while several large markets exempt them; the government is now examining the issue","u":"https://www.business-standard.com/markets/news/how-india-taxes-foreign-investors-share-gains-and-how-peers-compare-126111901384_1.html","s":"Business Standard Markets","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Amundi CIO says not bearish on France bonds, AI at the start of repricing","p":"Amundi has chosen a reserved approach towards French government bonds, amidst climbing yields and worries regarding fiscal management. Chief Investment Officer Vincent Mortier expressed a preference for bonds from nations with lower debt-to-GDP ratios and shor","u":"https://economictimes.indiatimes.com/markets/us-stocks/news/amundi-cio-says-not-bearish-on-france-bonds-ai-at-the-start-of-repricing/articleshow/135998168.cms","s":"Economic Times Markets","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Sebi roadmap focuses on faster IPOs, easier foreign investor access: Official","p":"Sebi is focusing on streamlining IPO and rights issue timelines to improve market efficiency. The regulator aims to reduce friction across the capital-raising lifecycle for economic expansion. Additionally, Sebi is working on enhancing corporate bond markets a","u":"https://economictimes.indiatimes.com/markets/stocks/news/sebi-roadmap-focuses-on-faster-ipos-easier-foreign-investor-access-official/articleshow/135998128.cms","s":"Economic Times Markets","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Six listed REIT firms distribute Rs 3,234 cr in Q2 to over 5.25 lakh unitholders","p":"India's six listed Real Estate Investment Trusts distributed Rs 3,234 crore to over 5.25 lakh unitholders. Since their inception, these REITs have distributed over Rs 38,000 crore collectively to investors. The total gross Assets Under Management for the secto","u":"https://economictimes.indiatimes.com/markets/digital-real-estate/realty-news/six-listed-reit-firms-distribute-rs-3234-cr-in-q2-to-over-5-25-lakh-unitholders/articleshow/135998101.cms","s":"Economic Times Markets","m":"5h","o":[],"big":0,"th":"","n":"₹3,234 cr","nl":"in Q2 to"},{"sec":"Markets","t":"Keystone Realtors to launch Rs 5,000 cr worth housing properties in MMR by Mar: CMD","p":"Keystone Realtors is set to unveil residential developments valued at Rs 5,000 crore across the Mumbai Metropolitan Region by next March. With sales bookings hitting Rs 2,000 crore in the first half of the fiscal year, the company is optimistic about achieving","u":"https://economictimes.indiatimes.com/markets/digital-real-estate/realty-news/keystone-realtors-to-launch-rs-5000-cr-worth-housing-properties-in-mmr-by-mar-cmd/articleshow/135997982.cms","s":"Economic Times Markets","m":"5h","o":[],"big":0,"th":"","n":"₹5,000 cr","nl":"worth housing properties"},{"sec":"Markets","t":"Signature Global acquires 10-acre land parcels in Gurugram to build realty projects","p":"Signature Global has successfully acquired two land parcels in Sohna, Gurugram, covering around 10 acres as part of its initiative to bolster its project portfolio. This strategic move complements the company’s focus on expanding its footprint in lucrative reg","u":"https://economictimes.indiatimes.com/markets/digital-real-estate/realty-news/signature-global-acquires-10-acre-land-parcels-in-gurugram-to-build-realty-projects/articleshow/135997924.cms","s":"Economic Times Markets","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Walmart raises its outlook for the year for the 3rd time after a solid quarter","p":"Walmart reported robust third-quarter sales figures, reflecting ongoing consumer demand for affordable shopping solutions. The retailer saw a significant surge in e-commerce sales, rising by 23%. With an emphasis on digital services and advertising, Walmart ha","u":"https://economictimes.indiatimes.com/markets/us-stocks/news/walmart-raises-its-outlook-for-the-year-for-the-3rd-time-after-a-solid-quarter/articleshow/135997871.cms","s":"Economic Times Markets","m":"5h","o":[],"big":0,"th":"","n":"23%","nl":"Walmart raises its"},{"sec":"Markets","t":"Sebi's next push: Making corporate bonds more liquid and tradable","p":"SEBI is working on a market-making framework with continuous quoting and repo liquidity support to improve corporate bond trading, said whole-time member K V R Murty.","u":"https://www.business-standard.com/markets/news/sebi-s-next-push-making-corporate-bonds-more-liquid-and-tradable-126111901259_1.html","s":"Business Standard Markets","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Palo Alto's raised sales forecast powers rally in cybersecurity stocks","p":"Palo Alto Networks recently announced its acquisition of AI startup Applied Compute for $4.5 billion. The company raised its annual forecast, which positively influenced various cybersecurity stocks. Investors are increasingly focused on cybersecurity due to t","u":"https://economictimes.indiatimes.com/markets/us-stocks/news/palo-altos-raised-sales-forecast-powers-rally-in-cybersecurity-stocks/articleshow/135997775.cms","s":"Economic Times Markets","m":"5h","o":[],"big":0,"th":"","n":"$4.5 bn","nl":"Palo Alto's raised"},{"sec":"Markets","t":"Nasdaq rallies as record Anthropic IPO revives AI stocks","p":"The Nasdaq surged following Anthropic's IPO, which sparked a revival in artificial intelligence investments. Pricing higher than expected, the IPO raked in impressive funds and valuations, positively impacting tech peers like Amazon and Alphabet. Despite some ","u":"https://economictimes.indiatimes.com/markets/us-stocks/wall-street-guide/us-stocks-nasdaq-rises-over-1-at-open-as-anthropic-ipo-pricing-bolsters-ai-trade/articleshow/135996273.cms","s":"Economic Times Markets","m":"6h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Fund managers turn overweight on India, first such classification since Jan","p":"Fund managers have recently indicated an increased interest in investing in India after several months of cautious sentiment. A significant number of investors are concerned about the absence of artificial intelligence-related investment options available. Inc","u":"https://economictimes.indiatimes.com/markets/stocks/news/fund-managers-turn-overweight-on-india-first-such-classification-since-jan/articleshow/135996610.cms","s":"Economic Times Markets","m":"6h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Goldman Sachs turns bullish on India stock market, upgrades rating to Overweight; sets Nifty target of 28,500","p":"Goldman Sachs upgraded Indian equities to Overweight and set a December 2027 Nifty 50 target of 28,500, citing expected earnings growth, resilient demand and renewed foreign investment.","u":"https://www.livemint.com/market/stock-market-news/goldman-sachs-turns-bullish-on-india-stock-market-upgrades-rating-to-overweight-sets-nifty-target-of-28500-11795099232497.html","s":"Mint Markets","m":"6h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"FPIs pour record ₹84K cr in 1st half of Nov; financials, auto rake in most","p":"Financial services attract more than half of foreign inflows, while telecom, auto and IT stocks also draw significant overseas investment","u":"https://www.business-standard.com/markets/news/fpis-pour-record-84k-cr-in-1st-half-of-nov-financials-auto-rake-in-most-126111901252_1.html","s":"Business Standard Markets","m":"6h","o":[],"big":0,"th":"","n":"₹84K","nl":"cr in 1st"},{"sec":"Markets","t":"Beyond BEL and HAL: L&T, Bharat Forge, BEML among 5 defence stocks that could benefit from proposed 20% capex boost","p":"The Defence Ministry has sought a 20% increase in capital spending for 2027–28. HAL and BEL are expected to benefit most, while L&amp;T, BEML, Bharat Dynamics, Mazagon Dock, Bharat Forge and Tata Advanced Systems may also gain from increased orders.","u":"https://www.livemint.com/market/stock-market-news/beyond-bel-and-hal-l-t-bharat-forge-beml-bel-among-6-defence-stocks-to-benefit-from-centres-proposed-20-capex-11795089244463.html","s":"Mint Markets","m":"8h","o":[],"big":0,"th":"","n":"20%","nl":"capex boost"},{"sec":"Markets","t":"Investors vs Economists: Should Govt Cut LTCG Tax?","p":"","u":"https://economictimes.indiatimes.com/markets/stocks/news/investors-vs-economists-should-govt-cut-ltcg-tax/videoshow/135993683.cms","s":"Economic Times Markets","m":"8h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Anthropic shares set for Nasdaq debut today; Wall Street brokerages see up to 87% upside from IPO price: Report","p":"Four brokerages issued bullish ratings, with price targets implying potential gains of 51% to 87%, citing growth prospects and rising AI adoption.","u":"https://www.livemint.com/market/stock-market-news/anthropic-shares-set-for-nasdaq-debut-today-wall-street-brokerages-see-up-to-87-upside-from-ipo-price-report-11795092766156.html","s":"Mint Markets","m":"8h","o":[],"big":0,"th":"","n":"87%","nl":"upside from IPO"},{"sec":"Markets","t":"Anthropic IPO Highlights: US stocks tumble 2%, head for longest losing streak since 2024 despite strong Anthropic debut","p":"","u":"https://economictimes.indiatimes.com/markets/us-stocks/wall-street-guide/anthropic-ipo-stock-price-live-us-market-dow-jones-nasdaq-ai-chip-nvidia-palo-alto-amazon-alphabet-coreweave-microsoft-fed-rate-hike-treasury-yield-news-19th-novmeber-2026/liveblog/135993460.cms","s":"Economic Times Markets","m":"8h","o":[],"big":0,"th":"","n":"2%","nl":"head for longest"},{"sec":"Markets","t":"Sebi mulls Capacity Building Network to strengthen independent directors","p":"Sebi Chairman Tuhin Kanta Pandey says the proposed network will promote peer learning, strengthen boardroom oversight and help independent directors navigate emerging technology risks.","u":"https://www.business-standard.com/markets/news/sebi-mulls-capacity-building-network-to-strengthen-independent-directors-126111901019_1.html","s":"Business Standard Markets","m":"9h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"India bonds end choppy session little changed as fresh cues on interest rates eyed","p":"Indian government bonds exhibited volatility and ended little changed as market participants awaited interest rate cues. The benchmark bond yield dropped from the previous day's closing level, reflecting market uncertainties. Expectations of rate hikes from th","u":"https://economictimes.indiatimes.com/markets/bonds/india-bonds-end-choppy-session-little-changed-as-fresh-cues-on-interest-rates-eyed/articleshow/135991621.cms","s":"Economic Times Markets","m":"9h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Markets","t":"Paytm, Pine Labs, MobiKwik shares tumble up to 9% on MDR delay concerns: Should investors stay away from fintech stocks?","p":"Fintech stocks, including Paytm, Pine Labs and One MobiKwik, fell as much as 9% after reports that India may delay a planned fee on select high-value UPI payments. The proposed MDR, originally due on October 15, could be postponed while payment firms and retai","u":"https://www.livemint.com/market/stock-market-news/paytm-pine-labs-mobikwik-shares-tumble-up-to-9-on-mdr-delay-concerns-should-investors-stay-away-from-fintech-stocks-11795088843361.html","s":"Mint Markets","m":"9h","o":["Business Standard Markets"],"big":0,"th":"","n":"9%","nl":"on MDR delay"},{"sec":"India business","t":"The psychology of investing: Why investor behaviour matters more than market moves","p":"Investment outcomes often depend less on the product and more on how investors behave. Tirth Gala, Partner, MOKSH FINSERV, explains five common behavioural biases, from loss aversion to anchoring, and simple habits that help investors stay disciplined.","u":"https://economictimes.indiatimes.com/industry/banking/finance/the-psychology-of-investing-why-investor-behaviour-matters-more-than-market-moves/articleshow/136003887.cms","s":"Economic Times Industry","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Ethanol blending touches 20% milestone in FY26","p":"India reached a significant achievement by blending 20% ethanol in the 2025-26 marketing year, which ended in October. The milestone indicates progress in renewable energy usage while reducing reliance on fossil fuels. Notably, 74% of the ethanol supply derive","u":"https://economictimes.indiatimes.com/industry/energy/power/ethanol-blending-touches-20-milestone-in-fy26/articleshow/136003344.cms","s":"Economic Times Industry","m":"2h","o":[],"big":0,"th":"","n":"20%","nl":"milestone in FY26"},{"sec":"India business","t":"Canadas BMO returning to US oil and gas investment banking, sources say","p":"BMO-USA/ENERGY (EXCLUSIVE, PIX):EXCLUSIVE-Canada's BMO returning to US oil and gas investment banking, sources say","u":"https://www.livemint.com/companies/canadas-bmo-returning-to-us-oil-and-gas-investment-banking-sources-say-11795114233832.html","s":"Mint Companies","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Skydance, ESPN Opt Out of Bidding for FIFA World Cup Rights","p":"Skydance Corp. and Walt Disney Co.’s ESPN have declined to bid for the US media rights for the next FIFA Men’s World Cup tournament in what could be one of the costliest and competitive auctions in the global soccer event’s history, according to people familia","u":"https://www.livemint.com/companies/skydance-espn-opt-out-of-bidding-for-fifa-world-cup-rights-11795113852106.html","s":"Mint Companies","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Anthropic IPO jackpot! CEO Dario Amodei's 237.3 million shares at $83 apiece now carry a $19.7 billion valuation","p":"The surge in Anthropic's share price also highlights the wealth created for its early investors and founders as the company completed what became the largest IPO in history, raising approximately $81.34 billion.","u":"https://www.livemint.com/companies/people/anthropic-ipo-jackpot-ceo-dario-amodeis-237-3-million-shares-at-83-apiece-now-carry-a-19-7-billion-valuation-11795112083821.html","s":"Mint Companies","m":"3h","o":[],"big":0,"th":"","n":"$83","nl":"apiece now carry"},{"sec":"India business","t":"Tata Trusts board meet on November 20; Tata Sons listing not on agenda","p":"Sir Dorabji Tata Trust trustees to discuss grant approvals ahead of Tata Sons board meeting on November 26","u":"https://www.business-standard.com/companies/news/tata-trusts-board-meet-on-november-20-tata-sons-listing-not-on-agenda-126111901507_1.html","s":"Business Standard Companies","m":"3h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Airtel overtakes HDFC Bank to become India's most valuable brand: Report","p":"Airtel's brand value rises 5% to $43.2 billion, marking the first time a telecom company has claimed the top spot since the rankings began in 2014","u":"https://www.business-standard.com/companies/news/airtel-overtakes-hdfc-bank-to-become-india-s-most-valuable-brand-kantar-126111901500_1.html","s":"Business Standard Companies","m":"3h","o":[],"big":0,"th":"","n":"5%","nl":"become India's most"},{"sec":"India business","t":"Keystone Realtors to launch ₹5K cr worth housing properties in MMR by March","p":"Realty firm Keystone Realtors Ltd will launch housing properties worth Rs 5,000 crore for sale by March next year in the Mumbai Metropolitan Region (MMR) as it remains bullish on consumer demand, a top company official said. Mumbai-based Keystone Realtors, whi","u":"https://www.business-standard.com/companies/news/keystone-realtors-to-launch-5k-cr-worth-housing-properties-in-mmr-by-march-126111900581_1.html","s":"Business Standard Companies","m":"3h","o":[],"big":0,"th":"","n":"₹5K","nl":"cr worth housing"},{"sec":"India business","t":"As Anthropic IPO debuts, founders see AI accelerating medical breakthroughs, transforming lives","p":"As Anthropic makes its stock market debut, co-founders Dario and Daniela Amodei highlight how AI could accelerate medical research, reshape workplaces and improve everyday lives, while stressing the need for responsible development.","u":"https://www.livemint.com/companies/people/anthropic-founders-see-ai-speeding-up-medical-breakthroughs-transforming-daily-life-11795106593779.html","s":"Mint Companies","m":"4h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"India customs dispute holds up $66 million of Scotch Whisky","p":"Customs classification dispute leaves bulk shipments stuck at ports, risking hundreds of millions in duties despite a UK-India free-trade pact","u":"https://www.thehindubusinessline.com/news/india-customs-dispute-holds-up-66-million-of-scotch-whisky/article71720972.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"$66 mn","nl":"of Scotch Whisky"},{"sec":"India business","t":"India’s GI boom is a filing story","p":"Until authorised-user numbers, renewals and enforcement actions are public, India will be counting tags, not measuring whether artisans gain","u":"https://www.thehindubusinessline.com/opinion/indias-gi-boom-is-a-filing-story/article71715883.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"rs,","nl":"ry"},{"sec":"India business","t":"Need for responsible B-Schools","p":"The worth of a business school should extend beyond placements, accreditations, rankings and compensation packages. Its true contribution lies in nurturing individuals who use their knowledge, capabilities and influence to make society better","u":"https://www.thehindubusinessline.com/opinion/need-for-responsible-b-schools/article71715948.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Regional Ring Road: Telangana govt to acquire 4,962 acres of land","p":"Officials disclosed at a review meeting on land acquisition for the southern Regional Ring Road and proposed radial roads, chaired by Chief Secretary Sanjay Jaju on Thursday","u":"https://www.thehindubusinessline.com/news/national/regional-ring-road-telangana-govt-to-acquire-4962-acres-of-land/article71721043.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Reservoir levels continue to drop in India’s major reservoirs","p":"Over 60% of the country received deficit rain between October 1 and Nov 18","u":"https://www.thehindubusinessline.com/economy/agri-business/reservoir-levels-continue-to-drop-in-indias-major-reservoirs/article71720717.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"60%","nl":"r levels continue"},{"sec":"India business","t":"Editorial. Margin of error","p":"Checks on leveraged cash-based trading welcome","u":"https://www.thehindubusinessline.com/opinion/editorial/margin-of-error/article71720444.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Letters to the Editor dated November 19, 2026","p":"","u":"https://www.thehindubusinessline.com/opinion/letters/letters-to-editor/article71721238.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"17 din se chal raha","n":"","nl":""},{"sec":"India business","t":"India’s crude oil demand to grow at 3% annually till 2035: IEA","p":"Rising transport, aviation, petrochemical and industrial needs are expected to drive India’s oil consumption even as advanced economies see declines","u":"https://www.thehindubusinessline.com/markets/commodities/indias-crude-oil-demand-to-grow-at-3-annually-till-2035-iea/article71719490.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"3%","nl":"annually till 2035:"},{"sec":"India business","t":"India, Japan decide to expedite UNICORN mast deal, key defence pacts at 2+2 talks","p":"The two countries agreed to enhance mine countermeasure capabilities to protect undersea cables, strengthen military industrial cooperation & welcomed signing of LOI allowing Japan Self-Defence Forces to conduct live firing at ranges in India","u":"https://www.thehindubusinessline.com/news/india-japan-decide-to-expedite-unicorn-mast-deal-key-defence-pacts-at-22-talks/article71720682.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Large capital needs, technology shift behind Pricol Autotech exit, says Vikram Mohan","p":"Speaking to analysts, he defended the decision to exit the business, noting that the family did not have the financial resources to retain majority ownership while meeting the substantial investments needed in technology, manufacturing and talent","u":"https://www.thehindubusinessline.com/companies/large-capital-needs-technology-shift-behind-pricol-autotech-exit-says-vikram-mohan/article71720971.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Wheat prices in Govt auction move up to align with market","p":"Prices rise ₹96-260 per quintal in a week; FCI averages higher across states; successful bidders fall after limit raised to 500 tonne per participant","u":"https://www.thehindubusinessline.com/economy/agri-business/wheat-prices-in-govt-auction-move-up-to-align-with-market/article71720031.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"₹96","nl":"Govt auction move"},{"sec":"India business","t":"ChangeNOW Hub debuts in Bengaluru to take Indian climate start-ups global","p":"Bengaluru was chosen for its vibrant startup ecosystem, technological capabilities and growing focus on climate and urban sustainability, making it a natural meeting ground for innovators, corporates and investors","u":"https://www.thehindubusinessline.com/companies/changenow-hub-debuts-in-bengaluru-to-take-indian-climate-start-ups-global/article71721179.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"rs,","nl":"ChangeNOW Hub debuts"},{"sec":"India business","t":"Gram Panchayats should transition from compliance-driven model to capability-based approach: RBI report","p":"RLBs, particularly Gram Panchayats, constitute the frontline of decentralised governance and service delivery in rural India","u":"https://www.thehindubusinessline.com/economy/gram-panchayats-should-transition-from-compliance-driven-model-to-capability-based-approach-rbi-report/article71720975.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"India back as favourite after 11 months: BofA fund manager survey","p":"The survey showed tech allocations fell by the most in a single month in November since June 2006","u":"https://www.thehindubusinessline.com/markets/india-back-as-favourite-after-11-months-bofa-fund-manager-survey/article71720831.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Digital payments rise 15% in this year’s Deepavali shopping season","p":"A businessline analysis of RBI data, however, found that the increase was driven entirely by UPI, which grew 17 per cent even as the combined transaction value of credit and debit card payments declined 10 per cent from last year’s lead-up to the festival","u":"https://www.thehindubusinessline.com/data-stories/data-focus/digital-payments-rise-15-in-this-years-deepavali-shopping-season/article71720765.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"15%","nl":"in this year’s"},{"sec":"India business","t":"Average age of EWS home loan borrowers stuck at 45-50, high-income borrowers turn younger: NHB","p":"NHB also urged broader credit access through co-lending, refinancing, and subsidies","u":"https://www.thehindubusinessline.com/money-and-banking/average-age-of-ews-home-loan-borrowers-stuck-at-45-50-high-income-borrowers-turn-younger-nhb/article71721205.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Airtel ranked as India’s Most Valuable Brand : Kantar BrandZ India 2026","p":"The report said Airtel’s steady investments in brand equity and its shift from connectivity to a broader digital ecosystem have helped it reach the top","u":"https://www.thehindubusinessline.com/info-tech/airtel-ranked-as-indias-most-valuable-brand-kantar-brandz-india-2026/article71720624.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"PM pulls Up India Inc for lack of innovation despite tax cuts","p":"Urges industry to shed comfort zone, curb imports across key sectors","u":"https://www.thehindubusinessline.com/economy/pm-pulls-up-india-inc-for-lack-of-innovation-despite-tax-cuts/article71720556.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Report calls for economic assessment of tobacco rules, foreign investment","p":"India Foundation report moots opening cigarette manufacturing to FDI while strengthening the institutions and rules that govern the sector","u":"https://www.thehindubusinessline.com/economy/agri-business/report-calls-for-economic-assessment-of-tobacco-rules-foreign-investment/article71720761.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Weak rural indicators cloud second half outlook: BNP Paribas India","p":"Lower gold prices are also weakening the rural wealth effect, according to India Strategy Report released by BNP Paribas India on Thursday","u":"https://www.thehindubusinessline.com/economy/weak-rural-indicators-clouds-second-half-outlook-bnp-paribas-india/article71719901.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"India business","t":"Karnataka Grand Challenge picks seven innovations to tackle farm produce losses","p":"The solutions are across preservation, packaging, cooling, logistics, financial access, digital trade and value addition","u":"https://www.thehindubusinessline.com/economy/agri-business/karnataka-grand-challenge-picks-seven-innovations-to-tackle-farm-produce-losses/article71720849.ece","s":"The Hindu BusinessLine","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"प्रधानमंत्री श्री नरेन्द्र मोदी ने 'समावेशी नीति संकल्प 2026' के पूर्ण सत्र की अध्यक्षता की","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338850","s":"PIB Releases","m":"","o":[],"big":0,"th":"10 din se chal raha","n":"","nl":""},{"sec":"Policy","t":"प्रधानमंत्री ने सामाजिक न्याय और अधिकारिता विभाग के सम्मेलन के समापन सत्र की अध्यक्षता की","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338845","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"ویوز فلم بازار عالمی فلمی تعاون کو فروغ دینے کے 20 سال مکمل ہونے کی نشان دہی کرتا ہے","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338801","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"केंद्रीय पर्यवेक्षी बोर्ड की 32वीं बैठक में पीसी एंड पीएनडीटी अधिनियम, 1994 के कार्यान्वयन की समीक्षा की गई","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338790","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"गोवा में कल से 57वें इफ्फी (IFFI) का शुभारंभ, जीवंत होंगी 'सरहदों से परे की कहानियां'","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338795","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"रक्षा मंत्री और जापान के रक्षा मंत्री ने टोक्यो में द्विपक्षीय वार्ता की","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338749","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"एनएपीडीडीआर के माध्यम से पुनर्वास और आजीविका के अवसरों को सुदृढ़ करना","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338770","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"केन्द्रीय गृह एवं सहकारिता मंत्री श्री अमित शाह ने आज नई दिल्ली में दो दिवसीय आतंकवाद-रोधी सम्मेलन के उद्घाटन सत्र को संबोधित किया","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338697","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"वैश्विक सांख्यिकीय साझेदारियों को बढ़ावा देना: ज्ञान के आदान-प्रदान और संस्थागत सहयोग के लिए सांख्यिकी और कार्यक्रम कार्यान्वयन मंत्रालय(एमओएसपीआई) का विजन","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338768","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"केंद्रीय मंत्री श्री नितिन गडकरी ने सड़क सुरक्षा, निर्माण गुणवत्ता और टिकाऊ तकनीकों पर अधिक ध्यान देने का आह्वान किया","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338784","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"लेंस के ज़रिए: गोवा के पणजी में 57वें भारतीय अंतर्राष्ट्रीय फिल्म महोत्सव (इफ्फी) की मेज़बानी के लिए तैयारियाँ ज़ोरों पर","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338738","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"डॉ. मनसुख मांडविया ने ईपीएफ के केंद्रीय न्यासी बोर्ड (सीबीटी) की 240वीं बैठक की अध्यक्षता की","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338767","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"रायपुर में उच्चस्तरीय बैठक में बस्तर क्षेत्र की व्यापक विकास योजना की समीक्षा की गई","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338704","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"अनुसूचित जाति के छात्रों के लिए राष्ट्रीय फेलोशिप के ज़रिए शैक्षणिक और शोध के अवसरों को और बेहतर बनाना","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338729","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"लोकसभा अध्यक्ष ने श्रीमती इंदिरा गांधी को पुष्पांजलि अर्पित की","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338628","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"सामाजिक न्याय और अधिकारिता मंत्रालय ने गुणवत्तापूर्ण आवासीय शिक्षा तक पहुंच बढ़ाने के लिए श्रेष्ठ 2027 की राष्ट्रीय प्रवेश परीक्षा (एनआटीएस) के लिए ऑनलाइन पंजीकरण शुरू किया","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338700","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"अपोलो मेडस्किल्स, न्यूलैंड फाउंडेशन, जेन टेक्नोलॉजीज और श्री सिद्धार्थ इंफ्राटेक एंड सर्विसेज ने तेलंगाना में 1,011 करोड़ रुपये की लागत वाली आईटीआई में बदलाव से संबंधित परियोजनाओं के लिए पीएम-सेतु के तहत सरकार के साथ एसएचए पर हस्ताक्षर किए","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338739","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"ग्वालियर के दूरसंचार विनिर्माण क्षेत्र को मिली गति, 25 कंपनियों को आशय पत्र वितरित","p":"","u":"https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2338677","s":"PIB Releases","m":"","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"Customs should review classification of bulk Scotch whisky imports: GTRI","p":"GTRI has urged Customs to classify bulk Scotch whisky under the India-UK trade pact's existing tariff code, warning that the current reclassification raises the duty to 150%.","u":"https://www.business-standard.com/economy/news/customs-should-review-classification-of-bulk-scotch-whisky-imports-gtri-126111901502_1.html","s":"Business Standard Economy","m":"3h","o":["Economic Times Economy"],"big":0,"th":"","n":"150%","nl":"Customs should review"},{"sec":"Policy","t":"India aims to achieve $1 trillion exports this year, says Piyush Goyal","p":"Minister says exports reached $480 billion in April-September; October recorded a monthly high of $90 billion","u":"https://www.business-standard.com/economy/news/india-aims-to-achieve-1-trillion-exports-this-year-says-piyush-goyal-126111901461_1.html","s":"Business Standard Economy","m":"4h","o":[],"big":0,"th":"","n":"$1 tn","nl":"exports this year,"},{"sec":"Policy","t":"Piyush Goyal calls for trusted India-US supply chains, deeper economic cooperation","p":"Commerce and Industry Minister Piyush Goyal urged India and the US to build trusted supply chains for better collaboration. He highlighted that India's strengths in talent and manufacturing complement America's capital and technology. The minister also encoura","u":"https://economictimes.indiatimes.com/news/economy/foreign-trade/piyush-goyal-calls-for-trusted-india-us-supply-chains-deeper-economic-cooperation/articleshow/135998771.cms","s":"Economic Times Economy","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"India needs $430 billion in exports in five months to meet FY27 target: Piyush Goyal","p":"India requires approximately USD 430 billion in exports from November to March to meet its ambitious target. By the end of October, the country had achieved 57 percent of its export goal for 2026-27. October exports reached an all-time high of nearly USD 90 bi","u":"https://economictimes.indiatimes.com/news/economy/foreign-trade/india-needs-430-billion-in-exports-in-five-months-to-meet-fy27-target-piyush-goyal/articleshow/135997642.cms","s":"Economic Times Economy","m":"5h","o":[],"big":0,"th":"","n":"$430 bn","nl":"in exports in"},{"sec":"Policy","t":"Gwalior telecom manufacturing zone draws ₹3,600 cr investment proposals","p":"As many as 25 companies have expressed interest in the Gwalior telecom manufacturing zone; the second phase will cover 450.45 acres, with over 15,000 jobs expected from investments","u":"https://www.business-standard.com/economy/news/gwalior-telecom-manufacturing-zone-draws-3-600-cr-investment-proposals-126111901291_1.html","s":"Business Standard Economy","m":"6h","o":[],"big":0,"th":"","n":"₹3,600 cr","nl":"investment proposals"},{"sec":"Policy","t":"Rupee extends gains for fourth straight session on strong foreign inflows","p":"The rupee strengthened to 93.30 against the US dollar as foreign portfolio inflows into equities and renewed buying of government bonds supported the currency despite a firm greenback.","u":"https://www.business-standard.com/economy/news/rupee-extends-gains-for-fourth-straight-session-on-strong-foreign-inflows-126111901118_1.html","s":"Business Standard Economy","m":"8h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"DIPAM Secretary calls for mobilising domestic savings, deepening capital markets for financing Viksit Bharat","p":"Arunish Chawla emphasized the need for improved domestic savings deployment and a diversified financial system. He highlighted the importance of supporting micro, small and medium enterprises through effective policy frameworks. Economic Advisory Council Chair","u":"https://economictimes.indiatimes.com/news/economy/policy/dipam-secretary-calls-for-mobilising-domestic-savings-deepening-capital-markets-for-financing-viksit-bharat/articleshow/135983279.cms","s":"Economic Times Economy","m":"8h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"Govt weighing ways to boost long-term credit to manufacturing: DEA secretary Anuradha Thakur","p":"Anuradha Thakur calls upon industry, especially large firms, to pursue public-private partnerships, partner with smaller businesses, and address wage stagnation&nbsp;","u":"https://www.livemint.com/economy/government-weighs-manufacturing-long-term-credit-boost-dfi-demand-economic-affairs-secretary-anuradha-thakur-11795086230061.html","s":"Mint Economy","m":"9h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"Yes Bank AT-1 bondholders urge RBI to prioritise investor protection","p":"Yes Bank AT-1 bondholders have urged the RBI to oversee implementation of the Supreme Court ruling restoring their investments, as the bank and central bank seek a review.","u":"https://www.business-standard.com/economy/news/yes-bank-at-1-bondholders-urge-rbi-to-prioritise-investor-protection-126111900920_1.html","s":"Business Standard Economy","m":"9h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"Manufacturing share in GDP must rise to 25% by 2047: EAC-PM Chair","p":"EAC-PM Chairman S Mahendra Dev says India needs sustained GDP growth of 8 per cent, higher private investment and stronger domestic savings to achieve developed-country status by 2047","u":"https://www.business-standard.com/economy/news/manufacturing-s-share-of-gdp-should-rise-to-25-by-2047-eac-pm-chairman-126111900907_1.html","s":"Business Standard Economy","m":"9h","o":[],"big":0,"th":"","n":"25%","nl":"by 2047: EAC-PM"},{"sec":"Policy","t":"FM Sitharaman chairs seventh pre-Budget consultation with infrastructure, energy and sustainability experts","p":"The government holds these consultations annually to gather input from experts and industry representatives before finalising Budget priorities and proposals.","u":"https://economictimes.indiatimes.com/news/economy/policy/fm-sitharaman-chairs-seventh-pre-budget-consultation-with-infrastructure-energy-and-sustainability-experts/articleshow/135989444.cms","s":"Economic Times Economy","m":"10h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Policy","t":"Piyush Goyal, Italy's Tajani seek stronger ties in autos, pharma and technology","p":"India and Italy are fostering stronger economic ties through joint ventures and technology partnerships. They seek collaboration in sectors such as automotive, aerospace, and agriculture. The discussions took place during the recent India-Italy Joint Commissio","u":"https://economictimes.indiatimes.com/news/economy/foreign-trade/piyush-goyal-italys-tajani-seek-stronger-ties-in-autos-pharma-and-technology/articleshow/135986992.cms","s":"Economic Times Economy","m":"11h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"MAHA PAC spent more on steak, luxury club than candidates, report shows","p":"Expert called MAHA's spending \"pretty unusual\" for a PAC.","u":"https://arstechnica.com/health/2026/11/maha-pac-spent-more-on-steak-luxury-club-than-candidates-report-shows/","s":"Ars Technica","m":"22m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Meta now sells 3D movies on Quest VR headsets","p":"Meta now offers more than 150 3D movies that you can buy or rent to watch in VR on its Quest 3 and 3S headsets, the company announced today. The movies are available in Meta's TV app and include titles like Avatar, Spider-Man: Far From Home, Jurassic World Reb","u":"https://www.theverge.com/tech/1038157/meta-quest-vr-3d-movies-tv-app","s":"The Verge","m":"29m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Man hired by Russia spied on Silicon Valley tech and defense company, feds say","p":"25-year-old accused of stalking employees at coffee shop and in an \"aggressive\" car pursuit.","u":"https://arstechnica.com/security/2026/11/man-charged-with-spying-on-silicon-valley-tech-and-defense-company-for-russia/","s":"Ars Technica","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Meta’s Muse Charm might cost $300","p":"Meta is planning to price the Muse Charm, a little gadget with a screen that lets you chat with your Muse AI agent, at $300, according to The Information. CEO Mark Zuckerberg revealed the gadget earlier this year and said the company expected to ship the Charm","u":"https://www.theverge.com/tech/1038087/meta-muse-charm-ai-price","s":"The Verge","m":"1h","o":[],"big":0,"th":"","n":"$300","nl":"Meta’s Muse Charm"},{"sec":"AI and tech","t":"Traumatized teens sue school, cops after Doritos bag triggers AI gun alert","p":"Lawsuit: Over 99% of school system’s AI gun alerts were false positives.","u":"https://arstechnica.com/tech-policy/2026/11/traumatized-teens-sue-school-cops-after-doritos-bag-triggers-ai-gun-alert/","s":"Ars Technica","m":"1h","o":[],"big":0,"th":"","n":"99%","nl":"sue school, cops"},{"sec":"AI and tech","t":"The unfolding Jensen Huang scandal: a timeline","p":"Jensen Huang has resigned from Nvidia following an affair, which could have ramifications for national security as the U.S. and China race to develop the most advanced AI infrastructure.","u":"https://techcrunch.com/2026/11/19/nvidia-ceo-jensen-huangs-affair-with-alleged-chinese-spy-a-timeline/","s":"TechCrunch AI","m":"1h","o":[],"big":0,"th":"8 din se chal raha","n":"","nl":""},{"sec":"AI and tech","t":"Google is putting AI chats right on the homepage","p":"Google is updating its homepage to include AI searches. In a post on X, Google's vice president of product, Robby Stein, shows how you can now open a collapsible sidebar to view and continue your AI chats. Based on the GIF shared by Stein, it looks like you ca","u":"https://www.theverge.com/tech/1038059/google-search-homepage-ai-chats","s":"The Verge","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Google turns to Blue Origin for a rocket, but its long-term problem remains","p":"\"Project Suncatcher is a long-term moonshot.\"","u":"https://arstechnica.com/space/2026/11/google-turns-to-blue-origin-for-a-rocket-but-its-long-term-problem-remains/","s":"Ars Technica","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"FCC greenlights rule allowing prisons to jam cellphone signals","p":"The Federal Communications Commission voted unanimously to allow state and local prisons to jam cellphones. In an announcement on Thursday, the FCC argues the rule will help combat an \"influx of contraband cellphones\" used to carry out crimes from prison. Jamm","u":"https://www.theverge.com/policy/1037987/fcc-prison-cellphone-signal-jamming","s":"The Verge","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Sony’s WH-1000XM5 are cheaper than ever for Black Friday","p":"Back in my day, the only “Doorbuster” sales were at physical retail stores. But now, you can get ultra-low prices before Black Friday whether you want to shop in-store or online. One that stands out is the previous-generation Sony WH-1000XM5 noise-canceling he","u":"https://www.theverge.com/gadgets/1037790/sony-wh-1000xm5-black-friday-deal-sale","s":"The Verge","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"You can now buy a Steam Machine without getting on a waitlist","p":"Valve announced some updates about Steam Machine availability today, including good news if you want to buy one right now and potential bad news about future supply due to RAMaggedon. The good news: You can now purchase a 512GB Steam Machine without getting on","u":"https://www.theverge.com/games/1038010/valve-steam-machine-waitlist-supply","s":"The Verge","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Some creators are skeptical of Instagram’s new affiliate program","p":"For years, influencers have come up with workarounds on social media to figure out how to share affiliate links with followers. A new integration between Instagram and Amazon was announced earlier this month as a way to make it easier for influencers to make m","u":"https://www.theverge.com/news/1037951/instagram-amazon-affiliate-links-influencers-ads","s":"The Verge","m":"2h","o":[],"big":0,"th":"","n":"rs,","nl":"rs are skeptical"},{"sec":"AI and tech","t":"Anthropic’s IPO could deliver $156 billion to charity","p":"At a stock price of $95, the frontier lab's Public Benefit Foundation, its employee donations, and the company's match tot up to $156 billion.","u":"https://techcrunch.com/2026/11/19/anthropics-ipo-could-deliver-156-billion-to-charity/","s":"TechCrunch AI","m":"2h","o":[],"big":0,"th":"","n":"$156 bn","nl":"to charity"},{"sec":"AI and tech","t":"\"You’re right\"—LLMs will get climate info wrong if you ask","p":"Some models fare better, but all fail in similar ways.","u":"https://arstechnica.com/science/2026/11/llms-will-provide-accurate-climate-info-except-when-they-wont/","s":"Ars Technica","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Sonos is taking up to 30 percent off speakers and soundbars right now","p":"Sonos speakers and soundbars aren’t exactly cheap, but thankfully the company’s Black Friday sale has already begun, making everything a little easier to afford through November 30th. Most notably, you can pick up the Arc Ultra soundbar for a new low of $849 (","u":"https://www.theverge.com/gadgets/1037042/sonos-black-friday-2026-speaker-soundbar-deals-sale","s":"The Verge","m":"3h","o":[],"big":0,"th":"","n":"30 %","nl":"off speakers and"},{"sec":"AI and tech","t":"Gemini on Mac can now use your computer","p":"Google's Gemini app for macOS now has computer use, meaning it can help you \"get multi-step tasks done across your local files, desktop apps, and the web,\" the company says. Google suggests the feature might be useful for things like speeding up workflows, fil","u":"https://www.theverge.com/tech/1037902/google-gemini-macos-ai-computer-use","s":"The Verge","m":"3h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Leaked images reveal Motorola’s wide foldable","p":"New leaked images of Motorola's next folding smartphone shared by SammyGuru add more credence to the theory that widescreen could be the default design for foldables moving forward. Following a single leaked shot shared to Reddit yesterday, this new crop of im","u":"https://www.theverge.com/tech/1037848/motorola-razr-flex-wide-foldable-folding-smartphone-android-leak","s":"The Verge","m":"3h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Google gives Gemini the ability to use your Mac for you","p":"Google's latest update to Gemini brings an AI agent to the Mac that can organize files, fill out forms, and tackle multistep workflows.","u":"https://techcrunch.com/2026/11/19/google-gives-gemini-the-ability-to-use-your-mac-for-you/","s":"TechCrunch AI","m":"3h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Google will launch Android app verification requirement globally in January 2027","p":"Google says almost all developers have already gotten on board with verification.","u":"https://arstechnica.com/gadgets/2026/11/google-will-launch-android-app-verification-requirement-globally-in-january-2027/","s":"Ars Technica","m":"3h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Meta’s AI agent Muse is mixing up conversations and could be exposing private data, report says","p":"In some of these instances, employees said Muse surfaced messages about childcare requests they never made, career advice they never asked for, product orders they never placed, and bank account balances that didn't belong to them.","u":"https://techcrunch.com/2026/11/19/metas-ai-agent-muse-is-mixing-up-conversations-and-exposing-private-data-report-says/","s":"TechCrunch AI","m":"4h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Claude solves two open problems in the physics of black holes","p":"Article URL: https://www.anthropic.com/research/claude-black-hole-physics Comments URL: https://news.ycombinator.com/item?id=50563148 Points: 286 # Comments: 113","u":"https://www.anthropic.com/research/claude-black-hole-physics","s":"Hacker News Front Page","m":"4h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Pancreatic cancer halted by virus injection in three patients","p":"https://archive.ph/2Et0x Comments URL: https://news.ycombinator.com/item?id=50563066 Points: 282 # Comments: 29","u":"https://www.newscientist.com/article/2528235-pancreatic-cancer-halted-by-virus-injection-in-three-patients/","s":"Hacker News Front Page","m":"4h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Anthropic hits $2T in Nasdaq debut","p":"Article URL: https://www.reuters.com/business/finance/anthropics-historic-debut-put-ais-promise-peril-wall-st-test-2026-11-19/ Comments URL: https://news.ycombinator.com/item?id=50562754 Points: 649 # Comments: 1123","u":"https://www.reuters.com/business/finance/anthropics-historic-debut-put-ais-promise-peril-wall-st-test-2026-11-19/","s":"Hacker News Front Page","m":"4h","o":["TechCrunch AI"],"big":0,"th":"","n":"$2","nl":"T in Nasdaq"},{"sec":"AI and tech","t":"Former Alibaba exec’s Everful raises $48.5M to connect retailers with Chinese factories","p":"Everful has raised $48.5 million to expand its factory-direct sourcing platform, helping retailers source products from overseas manufacturers.","u":"https://techcrunch.com/2026/11/19/former-alibaba-execs-everful-raises-48-5m-to-connect-retailers-with-chinese-factories/","s":"TechCrunch AI","m":"4h","o":[],"big":0,"th":"","n":"$48.5","nl":"M to connect"},{"sec":"AI and tech","t":"Fuck Your AI Safeguards","p":"Article URL: https://ounapuu.ee/posts/2026/11/19/unsafeguards/ Comments URL: https://news.ycombinator.com/item?id=50562262 Points: 361 # Comments: 140","u":"https://ounapuu.ee/posts/2026/11/19/unsafeguards/","s":"Hacker News Front Page","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"UK government forced to admit it issued Apple a secret encryption order","p":"Article URL: https://macanorak.com/uk-government-forced-to-admit-it-issued-apple-a-secret-encryption-order/ Comments URL: https://news.ycombinator.com/item?id=50562113 Points: 372 # Comments: 165","u":"https://macanorak.com/uk-government-forced-to-admit-it-issued-apple-a-secret-encryption-order/","s":"Hacker News Front Page","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"At Nasdaq opening bell, Anthropic CEO recommits to pacing AI development","p":"In his Nasdaq opening bell speech, Dario Amodei reiterated Anthropic's commitment to pacing AI development, regardless of business or political pressure.","u":"https://techcrunch.com/2026/11/19/at-nasdaq-opening-bell-anthropic-ceo-recommits-to-pacing-ai-development/","s":"TechCrunch AI","m":"5h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Pete warden on local AI, open models, voice interfaces, the future of hardware","p":"Article URL: https://thedataexchange.media/pete-warden-moonshine/ Comments URL: https://news.ycombinator.com/item?id=50561508 Points: 183 # Comments: 167","u":"https://thedataexchange.media/pete-warden-moonshine/","s":"Hacker News Front Page","m":"6h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"AI and tech","t":"Anthropic’s IPO puts AI’s circular financing boom to the test","p":"Anthropic faces enormous compute commitments as it goes public, but its biggest infrastructure partners, including Amazon and Google, could continue profiting from AI even if Anthropic loses its lead.","u":"https://techcrunch.com/2026/11/19/anthropics-ipo-puts-ais-circular-financing-boom-to-the-test/","s":"TechCrunch AI","m":"6h","o":[],"big":0,"th":"","n":"rs,","nl":"Anthropic’s IPO puts"},{"sec":"AI and tech","t":"Everything you need to survive and rebuild society","p":"Article URL: https://lastbook.org/ Comments URL: https://news.ycombinator.com/item?id=50560822 Points: 298 # Comments: 166","u":"https://lastbook.org/","s":"Hacker News Front Page","m":"6h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"Paytm Lines Up ₹200 Cr Investment in Singapore’s Funding Societies","p":"Adding to its international expedition, fintech major Paytm’s board has now approved an investment of up to ₹200 Cr in…","u":"https://inc42.com/buzz/paytm-lines-up-%e2%82%b9200-cr-investment-in-singapores-funding-societies/","s":"Inc42","m":"6h","o":[],"big":0,"th":"","n":"₹200 Cr","nl":"Investment in Singapore’s"},{"sec":"Startups","t":"Can ShareChat’s Microdrama-Fuelled Revival Keep Going?","p":"A thousand crores in annual revenue is a significant milestone for any Indian consumer internet company. And yet, crossing that…","u":"https://inc42.com/features/can-sharechats-microdrama-fuelled-revival-keep-going/","s":"Inc42","m":"6h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"AI Startup Disseqt AI Raises $8 Mn To Scale International Operations","p":"Disseqt AI, which builds AI agents for AI governance and testing, has raised $8 Mn (about ₹75 Cr) in a…","u":"https://inc42.com/buzz/ai-startup-disseqt-ai-raises-8-mn-to-scale-international-operations/","s":"Inc42","m":"6h","o":[],"big":0,"th":"","n":"$8 Mn","nl":"To Scale International"},{"sec":"Startups","t":"Razorpay To File UDRHP By Next Week, Eyes IPO By February 2027: Report","p":"Fintech major Razorpay is reportedly looking to file its updated DRHP as early as next week, following the SEBI clearance…","u":"https://inc42.com/buzz/razorpay-to-file-udrhp-by-next-week-eyes-ipo-by-february-2027-report/","s":"Inc42","m":"6h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"Anthropic IPO Rekindles Debate Over India’s AI Ambitions","p":"Anthropic’s record-breaking IPO has triggered a debate among Indian business leaders on the country’s ability to build globally competitive AI…","u":"https://inc42.com/buzz/anthropic-ipo-rekindles-debate-over-indias-ai-ambitions/","s":"Inc42","m":"7h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"How Dhruv Sayani built Ccigmaa Lifestyles into a five-brand personal care business","p":"How Dhruv Sayani built Ccigmaa Lifestyle into a four-brand personal care business Hair and water composition can change significantly every 100 kilometres across India, affecting how haircare products perform. It was this observation, made while researching pr","u":"https://yourstory.com/2026/11/how-dhruv-sayani-built-ccigmaa-lifestyles-into-a-five-brand-personal-care-business","s":"YourStory","m":"8h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"EPFO approves systematic withdrawal plan for retiring members","p":"Retiring members can now opt for receiving their retirement savings in periodic installments instead of a lump sum amount.","u":"https://yourstory.com/2026/11/epfo-approves-systematic-withdrawal-plan-retiring-members","s":"YourStory","m":"8h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"NEPRA Raises ₹110 Cr To Expand Plastic Recycling Capacity","p":"Ahmedabad-based waste management startup NEPRA has raised ₹110 Cr (about $11.7 Mn) in an equity funding round from the Private…","u":"https://inc42.com/buzz/nepra-raises-%e2%82%b9110-cr-to-expand-plastic-recycling-capacity/","s":"Inc42","m":"8h","o":[],"big":0,"th":"","n":"₹110 Cr","nl":"To Expand Plastic"},{"sec":"Startups","t":"'Where are the jobs?' Modi tells industry to respond to tax relief with hiring, salary hikes","p":"Prime Minister Narendra Modi lamented that despite reforms in areas of corporate tax, income tax and GST, it has not resulted in job creation by the industry.","u":"https://yourstory.com/2026/11/modi-tells-industry-respond-tax-relief-with-hiring-salary-hikes","s":"YourStory","m":"8h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"Startup news and updates: daily roundup (November 19, 2026)","p":"YourStory presents the daily news roundup from the Indian startup ecosystem and beyond. Here's the roundup for Thursday, November 19, 2026.","u":"https://yourstory.com/2026/11/startup-news-and-updates-daily-roundup-november-19-2026","s":"YourStory","m":"8h","o":[],"big":0,"th":"17 din se chal raha","n":"","nl":""},{"sec":"Startups","t":"Karnataka emerges as India's GCC powerhouse with 1,088 centres, says Kharge","p":"Karnataka hosts 51% of India's GCCs and 43% of its GCC AI talent. Minister Priyank Kharge unveiled a new Zinnov-KDEM report at Bengaluru Tech Summit 2026.","u":"https://yourstory.com/2026/11/karnataka-accounts-for-51-of-indias-gccs-says-new-report","s":"YourStory","m":"9h","o":[],"big":0,"th":"","n":"51%","nl":"s India's GCC"},{"sec":"Startups","t":"7 Micro-habits under 5 minutes that can change your year","p":"Discover 7 simple micro-habits that take less than five minutes but can improve your productivity, mindset, health and daily routine.","u":"https://yourstory.com/2026/11/7-micro-habits-under-5-minutes-that-can-change-your-year","s":"YourStory","m":"9h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"Gen Z’s guide to self-improvement: Build habits that pay off","p":"Explore practical self-improvement habits for Gen Z that improve focus, confidence, productivity and personal growth while delivering long-term results.","u":"https://yourstory.com/2026/11/gen-z-guide-to-self-improvement","s":"YourStory","m":"9h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"InPrime Finserv Raises ₹101 Cr To Expand Lending, Enter Micro-Mortgages","p":"Bengaluru-based NBFC InPrime Finserv has raised ₹101 Cr (about $10.7 Mn) in a Series B funding round led by Dutch…","u":"https://inc42.com/buzz/inprime-finserv-raises-%e2%82%b9101-cr-to-expand-lending-enter-micro-mortgages/","s":"Inc42","m":"10h","o":["YourStory"],"big":0,"th":"","n":"₹101 Cr","nl":"To Expand Lending,"},{"sec":"Startups","t":"Disseqt AI raises $8M to build enterprise AI safeguards","p":"The funds will support the expansion of Disseqt’s enterprise customer base globally. The company is also hiring in India across sales, operations and technology, with plans to expand into London.","u":"https://yourstory.com/2026/11/disseqt-ai-raises-8m-to-build-enterprise-ai-safeguards","s":"YourStory","m":"11h","o":[],"big":0,"th":"","n":"$8","nl":"M to build"},{"sec":"Startups","t":"When agents go out of bounds: How Lasso is helping enterprises secure the AI agents they build and use","p":"Enterprises are deploying AI agents faster than they can track them, and not every agent stays within the boundaries it was given. Lasso, part of NetApp Excellerator, is changing that.","u":"https://yourstory.com/2026/11/agents-lasso-enterprises-secure-ai-agents","s":"YourStory","m":"11h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"Nitin Gadkari Urges States To Adopt Aggregator Guidelines Amid Bike Taxi Crackdowns","p":"Union minister for road transport and highways Nitin Gadkari has urged states to adopt the Motor Vehicle Aggregator Guidelines, 2025,…","u":"https://inc42.com/buzz/nitin-gadkari-urges-states-to-adopt-aggregator-guidelines-amid-bike-taxi-crackdowns/","s":"Inc42","m":"12h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"Startups","t":"Six Indian startups selected for Hub71's Immersion Programme in Abu Dhabi","p":"The winners were chosen from among ten finalists in the areas of AI, clean energy, advanced manufacturing and digital finance.","u":"https://yourstory.com/2026/11/six-indian-startups-selected-for-hub71s-immersion-programme-in-abu-dhabi","s":"YourStory","m":"13h","o":[],"big":0,"th":"1 din se chal raha","n":"","nl":""},{"sec":"Startups","t":"AI can write code, but knowing what to build still matters","p":"At TechSparks 2026, Srinivas Chamarthy of Diligent India, Madhusudan N. Murthy of EY GDS, and Arun Kalyanaraman of Target discussed why domain expertise, engineering skills, and human judgement remain important as AI makes software development more accessible.","u":"https://yourstory.com/2026/11/ai-can-write-code-but-knowing-what-to-build-still-matters","s":"YourStory","m":"13h","o":[],"big":0,"th":"1 din se chal raha","n":"","nl":""},{"sec":"Startups","t":"Physical AI startup Humyn Labs raises $47M in Series A","p":"Humyn Labs said it will use the funds across three areas: building deployment-readiness infrastructure in Brazil, South Korea and India; and expanding its R&D and market presence in San Francisco, London and Seoul.","u":"https://yourstory.com/2026/11/physical-ai-startup-humyn-labs-raises-47-million-series-a","s":"YourStory","m":"14h","o":[],"big":0,"th":"1 din se chal raha","n":"$47","nl":"M in Series"},{"sec":"Startups","t":"Inside MS Dhoni’s startup playbook: 13 companies backed by Captain Cool","p":"From Garuda Aerospace to SolarSquare, explore 13 startups backed by MS Dhoni across fintech, electric mobility, gaming and clean energy.","u":"https://yourstory.com/2026/11/ms-dhonis-startup-investments-13-companies-he-has-backed","s":"YourStory","m":"14h","o":[],"big":0,"th":"1 din se chal raha","n":"","nl":""},{"sec":"Startups","t":"August AI Raises $12 Mn To Expand AI Healthcare Assistant In The US","p":"AI healthtech startup August AI has raised $12 Mn from Accel, Peak XV Partners, and Claypond Capital to expand its…","u":"https://inc42.com/buzz/august-ai-raises-12-mn-to-expand-ai-healthcare-assistant-in-the-us/","s":"Inc42","m":"14h","o":[],"big":0,"th":"1 din se chal raha","n":"$12 Mn","nl":"To Expand AI"},{"sec":"Startups","t":"Anthropic raises $81.3B in IPO, surpasses SpaceX's record offering","p":"Anthropic's IPO surpasses SpaceX's $75 billion offering. The company reported $16.2 billion in revenue in the first half of 2026, up from $1.16 billion in the same period last year, even as its reported net loss widened.","u":"https://yourstory.com/2026/11/anthropic-raises-813-billion-from-ipo-with-valuation-of-15-trillion","s":"YourStory","m":"14h","o":[],"big":0,"th":"1 din se chal raha","n":"$81.3","nl":"B in IPO,"},{"sec":"Startups","t":"From pattern matching to governing intent: How Semantic DLP is securing enterprise Gen AI","p":"Legacy DLP was built to catch patterns. It was not built to understand what employees paste into AI. Wald.ai, part of NetApp Excellerator’s Cohort 15, is teaching security to read intent.","u":"https://yourstory.com/2026/11/governing-semantic-dlp-securing-enterprise-gen-ai","s":"YourStory","m":"14h","o":[],"big":0,"th":"1 din se chal raha","n":"","nl":""},{"sec":"Startups","t":"Cyient Semiconductors bags $10M from GlobalFoundries","p":"Cyient Semiconductors will use the capital to scale custom-chip development, manufacturing access, and global growth.","u":"https://yourstory.com/2026/11/cyient-semiconductors-bags-usd-10m-from-globalfoundries","s":"YourStory","m":"15h","o":[],"big":0,"th":"1 din se chal raha","n":"$10","nl":"M from GlobalFoundries"},{"sec":"Startups","t":"UPI MDR Rollout May Be Pushed Beyond 2027 State Polls: Report","p":"The introduction of a merchant discount rate (MDR) on select UPI transactions could be delayed until after the 2027 state…","u":"https://inc42.com/buzz/upi-mdr-rollout-may-be-pushed-beyond-2027-state-polls-report/","s":"Inc42","m":"15h","o":[],"big":0,"th":"1 din se chal raha","n":"","nl":""},{"sec":"Startups","t":"Style Union raises Rs 485 Cr to expand beyond southern India","p":"Style Union’s parent has raised Rs 485 crore from Venturi Partners and Elev8 Venture Partners to expand nationally, targeting 450 stores by March 2030.","u":"https://yourstory.com/2026/11/style-union-raises-rs-485-cr-to-expand-beyond-southern-india","s":"YourStory","m":"16h","o":[],"big":0,"th":"1 din se chal raha","n":"₹485 Cr","nl":"to expand beyond"},{"sec":"Startups","t":"Bajaj Finserv and Pennant invest $4 million in Indian AI startup Soket AI","p":"Bajaj Finance and Pennant Technologies are backing Soket AI with investments of around $2 million each to advance its homegrown foundation models and enterprise AI solutions.","u":"https://yourstory.com/2026/11/bajaj-finserv-backs-soket-ai-with-4-million-investment-alongside-pennant","s":"YourStory","m":"16h","o":[],"big":0,"th":"1 din se chal raha","n":"$4 mn","nl":"in Indian AI"},{"sec":"Startups","t":"Ultraviolette X-47 Venom review: An electric crossover that makes more sense on the road?","p":"Ultraviolette’s X-47 Venom gets a 20kg weight reduction, improved battery cooling, more technology and better road manners, making it a compelling electric crossover. Here’s what we think.","u":"https://yourstory.com/2026/11/ultraviolette-x-47-venom-review-electric-crossover-makes-more-sense-road","s":"YourStory","m":"16h","o":[],"big":0,"th":"1 din se chal raha","n":"rs,","nl":"Ultraviolette X-47 Venom"},{"sec":"Startups","t":"Humyn Labs’ $47 Mn Round, From Blinkit To Vice City & More","p":"Humyn Labs’s $47 Mn Physical AI Play Humyn Labs is capitalising on the physical AI gold rush. The startup has…","u":"https://inc42.com/buzz/humyn-labs-47-mn-round-from-blinkit-to-vice-city-more/","s":"Inc42","m":"19h","o":[],"big":0,"th":"1 din se chal raha","n":"$47 Mn","nl":"Round, From Blinkit"},{"sec":"World","t":"Fiona the hippo dies after swallowing a hat at Cincinnati Zoo","p":"\"She fought until she couldn’t anymore,\" the Cincinnati Zoo said in a statement. Fiona became ill a few days after the incident.","u":"https://www.bbc.co.uk/news/articles/cwz0k3172xzko?at_medium=RSS&at_campaign=rss","s":"BBC World","m":"15m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Europe ready for talks with Russia on ending war in Ukraine, leaders say","p":"European allies of Ukraine say they have a \"united\" negotiating position at a summit in Berlin.","u":"https://www.bbc.co.uk/news/articles/ckzd9nln5e6go?at_medium=RSS&at_campaign=rss","s":"BBC World","m":"19m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"US appeals court lets Trump end TPS deportation protections for Venezuelans","p":"The appeals court's ruling prevents a lower-court decision from taking effect, which would block Trump from lifting TPS.","u":"https://www.aljazeera.com/news/2026/11/19/us-appeals-court-lets-trump-end-tps-deportation-protections-for-venezuelans?traffic_source=rss","s":"Al Jazeera","m":"29m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Ten killed in Pakistan as bus crashes into gas tanker","p":"Ten people were killed and at least 27 more injured after a passenger bus collided with an LPG tanker in Pakistan.","u":"https://www.aljazeera.com/video/newsfeed/2026/11/19/ten-killed-in-pakistan-as-bus-crashes-into-gas-tanker?traffic_source=rss","s":"Al Jazeera","m":"32m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Three arrested during Anthropic IPO protest outside Nasdaq","p":"As the AI giant Anthropic made its record-breaking stock market debut in New York, police arrested demonstrators","u":"https://www.aljazeera.com/video/newsfeed/2026/11/19/three-arrested-during-anthropic-ipo-protest-outside-nasdaq?traffic_source=rss","s":"Al Jazeera","m":"42m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Jerusalem Daily: Israel launches ground offensive in Gaza","p":"Israel launches its first major ground offensive in central Gaza, pushing beyond the ‘Yellow Line’ it controls","u":"https://www.aljazeera.com/video/newsfeed/2026/11/19/jerusalem-daily-israel-launches-ground-offensive-in-gaza-2?traffic_source=rss","s":"Al Jazeera","m":"42m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Rohingya genocide survivor: ‘perpetrators will have to face consequences’","p":"The International Court of Justice has ruled that Myanmar committed genocide against the Rohingya.","u":"https://www.aljazeera.com/video/newsfeed/2026/11/19/rohingya-genocide-survivor-perpetrators-will-have-to-face?traffic_source=rss","s":"Al Jazeera","m":"42m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Why are Bukele’s Salvadoran troops in Haiti and what have they achieved?","p":"With crowds rallying behind El Salvador's deployment in Haiti, analysts question whether civilians are any safer.","u":"https://www.aljazeera.com/news/2026/11/19/why-are-bukeles-salvadoran-troops-in-haiti-and-what-have-they-achieved?traffic_source=rss","s":"Al Jazeera","m":"47m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Will the Shenzhen summit safeguard world peace?","p":"Xi, Putin and Trump issue 'Peace Declaration' after historic summit.","u":"https://www.aljazeera.com/video/inside-story/2026/11/19/will-the-shenzhen-summit-safeguard-world-peace?traffic_source=rss","s":"Al Jazeera","m":"57m","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"FIR against two former Bengal Ministers over sexual assault charges","p":"Five former Ministers, who had been part of Mamata Banerjee’s cabinet, have been arrested since the BJP government came to power in May 2026","u":"https://www.thehindu.com/news/national/west-bengal/fir-against-two-former-bengal-ministers-over-sexual-assault-charges/article71721081.ece","s":"The Hindu National","m":"1h","o":[],"big":0,"th":"","n":"rs,","nl":"Bengal Ministers over"},{"sec":"World","t":"How vaccine fears fuelled a major measles comeback in the US","p":"Measles is making a comeback in the US as vaccination rates fall.","u":"https://www.aljazeera.com/video/newsfeed/2026/11/19/how-vaccine-fears-fuelled-a-major-measles-comeback-in-the-us?traffic_source=rss","s":"Al Jazeera","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Trump’s case against NYT and Penguin Random House may proceed: Judge","p":"The lawsuit cited a book about Trump by two NYT reporters and what it said were 'false, malicious, defamatory' articles.","u":"https://www.aljazeera.com/economy/2026/11/19/trumps-case-against-nyt-and-penguin-random-house-may-proceed-judge?traffic_source=rss","s":"Al Jazeera","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Senate Republicans in US reject measure to limit Trump’s war powers in Iran","p":"The resolution was defeated 51-48. Three Republicans broke rank, voting against the measure.","u":"https://www.aljazeera.com/news/2026/11/19/senate-republicans-in-us-reject-measure-to-limit-trumps-war-powers-in-iran?traffic_source=rss","s":"Al Jazeera","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"What does the Myanmar genocide ruling mean for the Rohingya?","p":"Rohingya refugees in Bangladesh cheered an International Court of Justice finding that Myanmar committed genocide.","u":"https://www.aljazeera.com/video/newsfeed/2026/11/19/what-does-the-myanmar-genocide-ruling-mean-for-the-rohingya?traffic_source=rss","s":"Al Jazeera","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Cyclone ‘Akvan’ updates: Three lakh evacuated, 423 rescue teams deployed as cyclone heads to Odisha","p":"The severe cyclonic storm is likely to cross north Andhra Pradesh and south Odisha coasts close to Gopalpur by noon on November 20","u":"https://www.thehindu.com/news/national/cyclone-akwan-tracker-live-updates-odisha-andhra-pradesh-landfall-imd-map-location-puri-vizag-bay-of-bengal/article71718788.ece","s":"The Hindu National","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Myanmar committed genocide against Rohingya minority, top UN court rules","p":"The unprecedented International Court of Justice verdict concerns a 2017 military crackdown that killed thousands.","u":"https://www.bbc.co.uk/news/articles/c804wzp20ddvo?at_medium=RSS&at_campaign=rss","s":"BBC World","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Trinamool party symbol row: Abhishek Banerjee says twin flower symbol will return in seven days","p":"Leader of the Opposition in the West Bengal Assembly Ritabrata Banerjee said that the symbol does not belong to either faction and Mr. Banerjee will not be able to stake claim over the symbol in seven births","u":"https://www.thehindu.com/news/national/west-bengal/trinamool-party-symbol-row-abhishek-banerjee-says-twin-flower-symbol-will-return-in-seven-days/article71721362.ece","s":"The Hindu National","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"‘On the same page’: Hegseth hails US ties with Colombia’s de la Espriella","p":"The US defence secretary praised security cooperation with Colombia as country joins Americas Counter Cartel Coalition.","u":"https://www.aljazeera.com/news/2026/11/19/on-the-same-page-hegseth-hails-us-ties-with-colombias-de-la-espriella?traffic_source=rss","s":"Al Jazeera","m":"1h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"European leaders unite in Berlin to reaffirm support for Ukraine","p":"German chancellor warns peace talks without Europe's involvement are doomed to fail, urging unity with Ukraine.","u":"https://www.aljazeera.com/news/2026/11/19/european-leaders-unite-in-berlin-to-reaffirm-support-for-ukraine?traffic_source=rss","s":"Al Jazeera","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Advocates, traders protest in Vaniyambadi for additional district court","p":"At present, Vaniyambadi has three lower courts that are located in different areas in the town","u":"https://www.thehindu.com/news/national/tamil-nadu/advocates-traders-protest-in-vaniyambadi-for-additional-district-court/article71720306.ece","s":"The Hindu National","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"CBI secures deportation of murder accused wanted by Kerala Police from UAE","p":"The incident occurred on October 1, 2008, at Thirumangalam, Thrissur","u":"https://www.thehindu.com/news/national/kerala/cbi-secures-deportation-of-murder-accused-wanted-by-kerala-police-from-uae/article71720445.ece","s":"The Hindu National","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Kerala High Court disposes of PILs against reconstitution of Waqf Board","p":"The High Court had refused to stay the reconstitution of the board in October","u":"https://www.thehindu.com/news/national/kerala/kerala-high-court-disposes-of-pils-against-reconstitution-of-waqf-board/article71721176.ece","s":"The Hindu National","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Photos: Genocide ruling spotlights human toll of 2017 Rohingya crisis","p":"Nearly a million Rohingya fled to Bangladesh in 2017, forming one of the world's largest refugee camps near Cox's Bazar.","u":"https://www.aljazeera.com/gallery/2026/11/19/photos-genocide-ruling-spotlights-2017-rohingya-crisis-human-toll?traffic_source=rss","s":"Al Jazeera","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"19-year-old B.Tech student found dead at hostel in VIT","p":"","u":"https://www.thehindu.com/news/national/tamil-nadu/19-year-old-btech-student-found-dead-at-hostel-in-vit/article71721316.ece","s":"The Hindu National","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Blockbuster GTA VI release shows cultural, economic heft of video games","p":"Runaway success of popular franchise comes as video game industry has struggled with mass layoffs in recent years.","u":"https://www.aljazeera.com/news/2026/11/19/blockbuster-gta-vi-release-shows-cultural-economic-heft-of-video-games?traffic_source=rss","s":"Al Jazeera","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Save the Children: Gaza’s children face ‘unmatched dangers’","p":"Aid group says one third of violations against children worldwide were in occupied Palestinian territory.","u":"https://www.aljazeera.com/news/2026/11/19/save-the-children-gazas-children-face-unmatched-dangers?traffic_source=rss","s":"Al Jazeera","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"World reacts to ICJ finding Myanmar guilty of genocide against Rohingya","p":"Landmark judgement in The Hague is the first time a state has been held responsible for genocide at the ICJ.","u":"https://www.aljazeera.com/news/2026/11/19/world-reacts-to-icj-finding-myanmar-guilty-of-genocide-against-rohingya?traffic_source=rss","s":"Al Jazeera","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Set aside differences and oppose Mekedatu dam, says TNCC president","p":"He also questions Prime Minister Narendra Modi’s silence when Karnataka Chief Minister D.K. Shivakumar spoke in favour of the project in his presence","u":"https://www.thehindu.com/news/national/tamil-nadu/set-aside-differences-and-oppose-mekedatu-dam-says-tncc-president/article71720861.ece","s":"The Hindu National","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Man protests on roof of Spanish embassy over Fergie Chambers extradition","p":"A man protested on the roof of Spain’s embassy in London against the extradition of US media heir Fergie Chambers.","u":"https://www.aljazeera.com/video/newsfeed/2026/11/19/man-protests-on-roof-of-spanish-embassy-over-fergie-chambers-extradition?traffic_source=rss","s":"Al Jazeera","m":"2h","o":[],"big":0,"th":"","n":"","nl":""},{"sec":"World","t":"Assam medical college department withdraws ‘defer marriage’ order for trainees after backlash","p":"","u":"https://www.thehindu.com/news/national/assam/assam-medical-college-department-withdraws-defer-marriage-order-for-trainees-after-backlash/article71721405.ece","s":"The Hindu National","m":"2h","o":[],"big":0,"th":"","n":"","nl":""}],"secs":[{"name":"Markets","icon":"chart-line","blurb":"Sensex, rupee, gold","c":["#E6F1FB","#B5D4F4","#042C53","#185FA5","#378ADD"],"n":30},{"name":"India business","icon":"building-store","blurb":"Companies, deals","c":["#EAF3DE","#C0DD97","#173404","#3B6D11","#639922"],"n":30},{"name":"Policy","icon":"building-bank","blurb":"RBI, budget, tax","c":["#FAEEDA","#FAC775","#412402","#854F0B","#EF9F27"],"n":30},{"name":"AI and tech","icon":"cpu","blurb":"Models, gadgets","c":["#EEEDFE","#CECBF6","#26215C","#534AB7","#7F77DD"],"n":30},{"name":"Startups","icon":"rocket","blurb":"Funding, founders","c":["#FBEAF0","#F4C0D1","#4B1528","#993556","#D4537E"],"n":30},{"name":"World","icon":"world","blurb":"Global, politics","c":["#E1F5EE","#9FE1CB","#04342C","#0F6E56","#1D9E75"],"n":30}],"quiz":[{"q":"Japanese investors sought $9.4 billion of shares in Anthropic IPO, sources say","opts":["$9.4 bn","8%","₹3,412 cr"],"a":"$9.4 bn","why":"Mint Markets · Japanese investors sought $9.4 billion of shares in Anthropic IPO, sources say"},{"q":"AMD shares slide ____ as report says China links could invite US scrutiny","opts":["8%","$9.4 bn","₹3,412 cr"],"a":"8%","why":"Economic Times Markets · AMD shares slide 8% as report says China links could invite US scrutiny"},{"q":"Sagar Defence Engineering files updated DRHP for ____ore IPO","opts":["₹3,412 cr","₹3,234 cr","₹5,000 cr"],"a":"₹3,412 cr","why":"Business Standard Markets · Sagar Defence Engineering files updated DRHP for ₹3,412 crore IPO"},{"q":"Six listed REIT firms distribute ____ in Q2 to over 5.25 lakh unitholders","opts":["₹3,234 cr","₹3,412 cr","₹5,000 cr"],"a":"₹3,234 cr","why":"Economic Times Markets · Six listed REIT firms distribute Rs 3,234 cr in Q2 to over 5.25 lakh unitholders"},{"q":"Keystone Realtors to launch ____ worth housing properties in MMR by Mar: CMD","opts":["₹5,000 cr","₹3,412 cr","₹3,234 cr"],"a":"₹5,000 cr","why":"Economic Times Markets · Keystone Realtors to launch Rs 5,000 cr worth housing properties in MMR by Mar: CMD"}],"trend":[{"t":"Paytm, Pine Labs, MobiKwik shares tumble up to 9% on MDR delay concerns: Should investors stay away from fintech stocks?","n":2,"u":"https://www.livemint.com/market/stock-market-news/paytm-pine-labs-mobikwik-shares-tumble-up-to-9-on-mdr-delay-concerns-should-investors-stay-away-from-fintech-stocks-11795088843361.html"},{"t":"Customs should review classification of bulk Scotch whisky imports: GTRI","n":2,"u":"https://www.business-standard.com/economy/news/customs-should-review-classification-of-bulk-scotch-whisky-imports-gtri-126111901502_1.html"},{"t":"Anthropic hits $2T in Nasdaq debut","n":2,"u":"https://www.reuters.com/business/finance/anthropics-historic-debut-put-ais-promise-peril-wall-st-test-2026-11-19/"},{"t":"InPrime Finserv Raises ₹101 Cr To Expand Lending, Enter Micro-Mortgages","n":2,"u":"https://inc42.com/buzz/inprime-finserv-raises-%e2%82%b9101-cr-to-expand-lending-enter-micro-mortgages/"}],"total":441};
+const ARCHIVED = "2026-11-20";
+const DATE = "Friday, 20 November";
+const UPDATED = "3:11 AM IST";
+
+const $ = s => document.querySelector(s);
+const el = (t, c) => { const n = document.createElement(t); if (c) n.className = c; return n; };
+const esc = s => { const d = el("div"); d.textContent = s == null ? "" : s; return d.innerHTML; };
+const SEC = Object.fromEntries(D.secs.map(s => [s.name, s]));
+const col = n => (SEC[n] || {}).c || ["#22304C", "#2E3D5C", "#F2F5FA", "#A8B4CA", "#7C8BA8"];
+
+const LS = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem("db_" + k)) ?? d; }
+              catch { return d; } },
+  set(k, v) { try { localStorage.setItem("db_" + k, JSON.stringify(v)); } catch {} }
+};
+
+let saved = LS.get("saved", []);
+let seen = new Set(LS.get("seen", []));
+let quizDone = LS.get("quizday", "") === DATE;
+
+function touchStreak(){
+  const t = new Date().toISOString().slice(0, 10);
+  let s = LS.get("streak", {last: "", n: 0});
+  if (s.last === t) return s.n;
+  const y = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+  s = {last: t, n: s.last === y ? s.n + 1 : 1};
+  LS.set("streak", s);
+  return s.n;
+}
+const streak = touchStreak();
+
+let route = {v: "home", sec: null};
+
+function nav(){
+  const n = $("#nav");
+  n.innerHTML = "";
+  const brand = el("div");
+  brand.innerHTML = '<div class="logo">Daily Brief</div>' +
+                    '<div class="tag">Chhoti khabar, badi samajh</div>';
+  n.appendChild(brand);
+
+  const mk = (icon, label, v, sec, count, c) => {
+    const b = el("button", "nv" + (route.v === v && route.sec === sec ? " on" : ""));
+    if (c){ b.style.setProperty("--nvbg", c[1]); b.style.setProperty("--nvfg", c[2]);
+            b.style.setProperty("--nvbd", c[4]); }
+    b.innerHTML = '<i class="ti ti-' + icon + '" aria-hidden="true"></i>' + esc(label) +
+                  (count != null ? '<span class="nvn">' + count + '</span>' : '');
+    b.onclick = () => go(v, sec);
+    return b;
+  };
+
+  n.appendChild(mk("home", "Home", "home", null, null,
+                   ["", "#5DCAA5", "#04342C", "", "#1D9E75"]));
+  D.secs.forEach(s => n.appendChild(
+    mk(s.icon, s.name, "sec", s.name, s.n, s.c)));
+  const hr = el("div", "hr"); n.appendChild(hr);
+  n.appendChild(mk("bookmark", "Saved", "saved", null, saved.length,
+                   ["", "#CECBF6", "#26215C", "", "#7F77DD"]));
+  n.appendChild(mk("calendar", "Purani news", "old", null, null,
+                   ["", "#FAC775", "#412402", "", "#EF9F27"]));
+  n.appendChild(mk("help-circle", "Quiz", "quiz", null, D.quiz.length || null,
+                   ["", "#F4C0D1", "#4B1528", "", "#D4537E"]));
+}
+
+function header(title, sub){
+  const h = el("div", "top");
+  h.innerHTML =
+    '<div><div class="hey">' + esc(title) + '</div><div class="sub">' + esc(sub) + '</div></div>' +
+    '<div class="meta"><b>' + esc(DATE) + '</b>updated ' + esc(UPDATED) +
+    '<div class="pills">' +
+      '<span class="pill fire"><i class="ti ti-flame" aria-hidden="true"></i>' + streak + ' din</span>' +
+      '<span class="pill"><i class="ti ti-book" aria-hidden="true"></i>' + seen.size + ' padhi</span>' +
+      '<span class="pill"><i class="ti ti-bookmark" aria-hidden="true"></i>' + saved.length + '</span>' +
+    '</div></div>';
+  return h;
+}
+
+function viewHome(){
+  const v = $("#view"); v.innerHTML = "";
+  v.appendChild(header("Namaste", D.total + " nayi stories aayi hain"));
+
+  const g = el("div", "grid");
+  D.secs.forEach(s => {
+    const [pale, tint, dk, md, vv] = s.c;
+    const b = el("button", "tile");
+    b.style.background = tint; b.style.borderColor = vv;
+    b.innerHTML =
+      '<i class="ti ti-' + s.icon + ' hd" style="color:' + dk + '" aria-hidden="true"></i>' +
+      '<div class="nm" style="color:' + dk + '">' + esc(s.name) + '</div>' +
+      '<div class="bl" style="color:' + md + '">' + esc(s.blurb) + '</div>' +
+      '<div class="rw" style="color:' + md + '">' + s.n + ' nayi' +
+      '<i class="ti ti-arrow-right" style="font-size:18px;color:' + dk + '" aria-hidden="true"></i></div>';
+    b.onclick = () => go("sec", s.name);
+    g.appendChild(b);
+  });
+  v.appendChild(g);
+
+  if (D.trend.length){
+    const p = el("div", "panel");
+    p.innerHTML = '<div class="ph"><i class="ti ti-flame" style="color:#EF9F27" aria-hidden="true"></i>' +
+                  'Aaj sabse zyada charcha mein</div>';
+    const r = el("div", "trow");
+    D.trend.forEach((t, i) => {
+      const a = el("a", "tr");
+      a.href = t.u; a.target = "_blank"; a.rel = "noopener";
+      a.innerHTML = '<span class="trn">' + (i + 1) + '</span>' +
+        '<span class="trt">' + esc(t.t) +
+        ' <span class="trs">' + t.n + ' sources</span></span>';
+      r.appendChild(a);
+    });
+    p.appendChild(r); v.appendChild(p);
+  }
+}
+
+let deck = [], idx = 0;
+
+function viewSec(name){
+  const v = $("#view"); v.innerHTML = "";
+  const s = SEC[name] || {};
+  v.appendChild(header(name, (s.blurb || "") + " · " + (s.n || 0) + " stories"));
+
+  deck = D.cards.filter(c => c.sec === name);
+  const fresh = deck.filter(c => !seen.has(c.u));
+  if (fresh.length) deck = fresh.concat(deck.filter(c => seen.has(c.u)));
+  idx = 0;
+
+  const wrap = el("div");
+  wrap.innerHTML =
+    '<div class="deck" id="deck"><div class="bk b2"></div><div class="bk b1"></div></div>' +
+    '<div class="ctrl">' +
+      '<button class="rnd" id="prev" aria-label="Pichhla"><i class="ti ti-arrow-left" aria-hidden="true"></i></button>' +
+      '<div style="flex:1"><div class="bar"><div class="fil" id="fil"></div></div>' +
+      '<div class="hint"><span id="pos">0</span> / <span id="tot">0</span> · dayein save, bayein skip</div></div>' +
+      '<button class="rnd" id="next" aria-label="Agla"><i class="ti ti-bookmark" aria-hidden="true"></i></button>' +
+    '</div>';
+  v.appendChild(wrap);
+  $("#tot").textContent = deck.length;
+  $("#prev").onclick = () => step(-1);
+  $("#next").onclick = () => { const c = $("#deck .card"); c ? fly(c, 1) : step(1); };
+  drawCard();
+}
+
+function drawCard(){
+  const d = $("#deck");
+  if (!d) return;
+  d.querySelectorAll(".card,.done").forEach(n => n.remove());
+
+  if (idx >= deck.length){
+    const done = el("div", "done big");
+    done.style.cssText = "position:absolute;inset:0;display:grid;place-content:center;text-align:center";
+    done.innerHTML = '<i class="ti ti-confetti" style="color:#FAC775" aria-hidden="true"></i>' +
+      '<h2>Ho gaya</h2><p>' + deck.length + ' stories dekh li. Quiz de do, streak pakki ho jayegi.</p>';
+    const b = el("button", "btn");
+    b.style.cssText = "margin:16px auto 0;border-color:#D4537E;color:#F4C0D1";
+    b.textContent = "Quiz kholo"; b.onclick = () => go("quiz");
+    done.appendChild(b); d.appendChild(done);
+    $("#pos").textContent = deck.length;
+    $("#fil").style.width = "100%";
+    $("#next").disabled = true; $("#prev").disabled = idx === 0;
+    return;
+  }
+
+  const c = deck[idx];
+  const [pale, tint, dk, md, vv] = col(c.sec);
+  const a = el("article", "card");
+  a.style.background = pale; a.style.borderColor = vv;
+  a.innerHTML =
+    '<div class="cmain">' +
+      '<div class="crow">' +
+        '<span class="bdg" style="background:' + vv + ';color:' + pale + ';border-color:' + dk + '">' + esc(c.sec) + '</span>' +
+        '<span class="tmm" style="color:' + md + '">' + esc(c.m) + '</span>' +
+      '</div>' +
+      (c.n ? '<div class="statb" style="background:' + tint + ';border-color:' + vv + '">' +
+        '<span class="statv" style="color:' + dk + '">' + esc(c.n) + '</span>' +
+        '<span class="statl" style="color:' + md + '">' + esc(c.nl) + '</span></div>' : '') +
+      '<div class="ttl" style="color:' + dk + '">' + esc(c.t) + '</div>' +
+      '<p class="sm" style="color:' + md + '">' + esc(c.p) + '</p>' +
+      '<div class="cfoot" style="border-top-color:' + tint + '">' +
+        '<span class="srcn" style="color:' + dk + '">' + esc(c.s) + '</span>' +
+        '<button class="btn spk" style="margin-left:auto;border-color:' + vv + ';color:' + md + '">' +
+          '<i class="ti ti-volume" aria-hidden="true"></i>Suno</button>' +
+        '<a class="btn" href="' + esc(c.u) + '" target="_blank" rel="noopener" ' +
+          'style="background:' + vv + ';color:' + pale + ';border-color:' + dk + '">Padho</a>' +
+      '</div>' +
+    '</div>' +
+    '<div class="cside" style="background:' + tint + ';border-left-color:' + vv + '">' +
+      (c.big ? '<span class="bdg" style="align-self:flex-start;margin-bottom:11px;font-size:11px;background:' +
+        vv + ';color:' + pale + ';border-color:' + dk + '">Badi khabar</span>' : '') +
+      (c.o.length ? '<div class="sideh" style="color:' + md + '">Aur kahan chhapa</div>' +
+        c.o.map(o => '<div class="och" style="color:' + dk + ';background:' + pale +
+                     ';border-color:' + pale + '">' + esc(o) + '</div>').join("") : '') +
+      (c.th ? '<div class="thr" style="background:' + pale + ';border-color:' + vv +
+              ';color:' + md + '">' + esc(c.th) + '</div>' : '') +
+    '</div>' +
+    '<span class="ov s" style="background:' + vv + ';color:' + pale + ';border-color:' + dk + '">Saved</span>' +
+    '<span class="ov k">Skip</span>';
+  d.appendChild(a);
+
+  a.querySelector(".spk").onclick = e => {
+    e.stopPropagation();
+    try { speechSynthesis.cancel();
+          speechSynthesis.speak(new SpeechSynthesisUtterance(c.t + ". " + c.p)); } catch {}
+  };
+
+  $("#pos").textContent = idx + 1;
+  $("#fil").style.width = (idx / deck.length * 100) + "%";
+  $("#fil").style.background = vv;
+  $("#next").disabled = false; $("#prev").disabled = idx === 0;
+  swipe(a);
+}
+
+function step(n){
+  idx = Math.max(0, Math.min(deck.length, idx + n));
+  drawCard();
+}
+
+function fly(node, dir){
+  const c = deck[idx];
+  if (c){
+    seen.add(c.u); LS.set("seen", [...seen].slice(-1500));
+    if (dir > 0 && !saved.some(x => x.u === c.u)){
+      saved.unshift({u: c.u, t: c.t, s: c.s, sec: c.sec});
+      LS.set("saved", saved.slice(0, 300));
+    }
+  }
+  node.classList.add("go");
+  node.style.transform = "translateX(" + (dir * 130) + "%) rotate(" + (dir * 8) + "deg)";
+  node.style.opacity = "0";
+  setTimeout(() => { idx++; drawCard(); nav(); }, 280);
+}
+
+function swipe(node){
+  let x0 = null, y0 = 0, dx = 0, on = false;
+  const s = node.querySelector(".ov.s"), k = node.querySelector(".ov.k");
+  node.addEventListener("pointerdown", e => {
+    if (e.target.closest("a,button")) return;
+    x0 = e.clientX; y0 = e.clientY; dx = 0; on = false;
+    node.style.transition = "none";
+    try { node.setPointerCapture(e.pointerId); } catch {}
+  });
+  node.addEventListener("pointermove", e => {
+    if (x0 === null) return;
+    dx = e.clientX - x0;
+    if (!on && Math.abs(dx) < Math.abs(e.clientY - y0)) return;
+    on = true;
+    node.style.transform = "translateX(" + dx + "px) rotate(" + (dx / 28) + "deg)";
+    s.style.opacity = Math.max(0, Math.min(1, dx / 85));
+    k.style.opacity = Math.max(0, Math.min(1, -dx / 85));
+  });
+  const up = () => {
+    if (x0 === null) return;
+    if (on && Math.abs(dx) > 76) fly(node, dx > 0 ? 1 : -1);
+    else {
+      node.style.transition = "transform .2s,opacity .2s";
+      node.style.transform = ""; s.style.opacity = 0; k.style.opacity = 0;
+    }
+    x0 = null; dx = 0;
+  };
+  node.addEventListener("pointerup", up);
+  node.addEventListener("pointercancel", up);
+}
+
+function viewSaved(){
+  const v = $("#view"); v.innerHTML = "";
+  v.appendChild(header("Saved", saved.length + " stories rakhi hain"));
+  if (!saved.length){
+    const b = el("div", "big");
+    b.innerHTML = '<i class="ti ti-bookmark" style="color:#7F77DD" aria-hidden="true"></i>' +
+      '<h2>Abhi khaali hai</h2><p>Card ko dayein swipe karo, wo yahan aa jayegi.</p>';
+    v.appendChild(b); return;
+  }
+  const l = el("div", "lst");
+  saved.forEach((c, i) => {
+    const [pale, tint, dk, md, vv] = col(c.sec);
+    const row = el("div", "li");
+    row.innerHTML = '<span class="lidot" style="background:' + vv + '"></span>' +
+      '<a href="' + esc(c.u) + '" target="_blank" rel="noopener" style="text-decoration:none;flex:1">' +
+      '<div class="lit">' + esc(c.t) + '</div>' +
+      '<div class="lis">' + esc(c.s) + ' · ' + esc(c.sec) + '</div></a>' +
+      '<button class="rm" aria-label="Hatao"><i class="ti ti-x" aria-hidden="true"></i></button>';
+    row.querySelector(".rm").onclick = () => {
+      saved.splice(i, 1); LS.set("saved", saved); viewSaved(); nav();
+    };
+    l.appendChild(row);
+  });
+  v.appendChild(l);
+}
+
+async function viewOld(){
+  const v = $("#view"); v.innerHTML = "";
+  v.appendChild(header("Purani news", "Kisi bhi din pe tap karo"));
+  const l = el("div", "lst"); l.innerHTML = '<div class="lis">Loading…</div>';
+  v.appendChild(l);
+  const base = ARCHIVED ? "./" : "./archive/";
+  try {
+    const r = await fetch(base + "dates.json", {cache: "no-store"});
+    const list = await r.json();
+    l.innerHTML = "";
+    if (!list.length){ l.innerHTML = '<div class="lis">Abhi koi purana din nahi hai.</div>'; return; }
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    list.forEach(d => {
+      const dt = new Date(d + "T00:00:00");
+      const n = Math.round((today - dt) / 864e5);
+      const rel = n === 0 ? "Aaj" : n === 1 ? "Kal" : n + " din pehle";
+      const a = el("a", "li");
+      a.href = (ARCHIVED ? "./" : "./archive/") + d + ".html";
+      a.innerHTML = '<span class="lidot" style="background:#EF9F27"></span>' +
+        '<div style="flex:1"><div class="lit">' +
+        dt.toLocaleDateString("en-IN", {weekday: "long", day: "numeric", month: "long"}) +
+        '</div><div class="lis">' + rel + '</div></div>' +
+        '<i class="ti ti-chevron-right" style="color:#7C8BA8;font-size:18px" aria-hidden="true"></i>';
+      l.appendChild(a);
+    });
+  } catch {
+    l.innerHTML = '<div class="lis">Archive abhi nahi bana. Kal se dikhega.</div>';
+  }
+}
+
+let qi = 0, qScore = 0;
+
+function viewQuiz(){
+  const v = $("#view"); v.innerHTML = "";
+  v.appendChild(header("Quiz", "Aaj ki news se " + D.quiz.length + " sawaal"));
+  if (!D.quiz.length){
+    const b = el("div", "big");
+    b.innerHTML = '<i class="ti ti-help-circle" style="color:#D4537E" aria-hidden="true"></i>' +
+      '<h2>Aaj quiz nahi bana</h2><p>Kaafi headlines mein number nahi mile. Kal phir dekho.</p>';
+    v.appendChild(b); return;
+  }
+  const w = el("div", "qw"); w.id = "qw"; v.appendChild(w);
+  qi = 0; qScore = 0; drawQ();
+}
+
+function drawQ(){
+  const w = $("#qw"); if (!w) return;
+  if (qi >= D.quiz.length){
+    const pct = Math.round(qScore / D.quiz.length * 100);
+    LS.set("quizday", DATE);
+    w.innerHTML = '<div class="big"><i class="ti ti-flame" style="color:#FAC775" aria-hidden="true"></i>' +
+      '<h2>' + qScore + ' / ' + D.quiz.length + ' sahi</h2>' +
+      '<p>' + pct + '% score. Streak ' + streak + ' din ki ho gayi.</p></div>';
+    const b = el("button", "btn");
+    b.style.cssText = "margin:0 auto;display:flex;border-color:#1D9E75;color:#9FE1CB";
+    b.textContent = "Phir se"; b.onclick = () => { qi = 0; qScore = 0; drawQ(); };
+    w.appendChild(b);
+    return;
+  }
+  const q = D.quiz[qi];
+  const opts = q.opts.slice().sort(() => Math.random() - 0.5);
+  w.innerHTML = '<div class="qcard"><div class="lis">Sawaal ' + (qi + 1) + ' / ' + D.quiz.length + '</div>' +
+    '<div class="qq">' + esc(q.q) + '</div><div id="ops"></div><div id="fb" class="qfb hide"></div></div>';
+  const box = w.querySelector("#ops");
+  opts.forEach(o => {
+    const b = el("button", "op");
+    b.textContent = o;
+    b.onclick = () => {
+      const right = o === q.a;
+      if (right) qScore++;
+      box.querySelectorAll(".op").forEach(x => {
+        x.disabled = true;
+        if (x.textContent === q.a) x.classList.add("ok");
+        else if (x === b) x.classList.add("no");
+      });
+      const fb = w.querySelector("#fb");
+      fb.classList.remove("hide");
+      fb.textContent = (right ? "Sahi. " : "Sahi jawab " + q.a + ". ") + q.why;
+      const nx = el("button", "btn");
+      nx.style.cssText = "margin-top:12px;border-color:#7F77DD;color:#CECBF6";
+      nx.textContent = qi + 1 < D.quiz.length ? "Agla sawaal" : "Score dekho";
+      nx.onclick = () => { qi++; drawQ(); };
+      fb.appendChild(el("div")).appendChild(nx);
+    };
+    box.appendChild(b);
+  });
+}
+
+function go(v, sec){
+  route = {v: v, sec: sec || null};
+  nav();
+  window.scrollTo(0, 0);
+  if (v === "home") viewHome();
+  else if (v === "sec") viewSec(sec);
+  else if (v === "saved") viewSaved();
+  else if (v === "old") viewOld();
+  else if (v === "quiz") viewQuiz();
+}
+
+addEventListener("keydown", e => {
+  if (route.v !== "sec") return;
+  const c = $("#deck .card"); if (!c) return;
+  if (e.key === "ArrowRight"){ e.preventDefault(); fly(c, 1); }
+  if (e.key === "ArrowLeft"){ e.preventDefault(); step(-1); }
+});
+
+if (ARCHIVED){
+  $("#archbar").className = "arch";
+  $("#archbar").innerHTML = '<i class="ti ti-calendar" aria-hidden="true"></i>Purani news · ' +
+    ARCHIVED + '<a href="../index.html">Aaj ki news dekho</a>';
+}
+go("home");
+</script>
+</body>
+</html>
